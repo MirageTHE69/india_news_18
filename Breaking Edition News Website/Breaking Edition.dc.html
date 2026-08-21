@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #F1EFE8; -webkit-font-smoothing: antialiased; }
+  a { color: #378ADD; text-decoration: none; }
+  a:hover { color: #D9232A; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes blink { 0%, 60% { opacity: 1; } 80%, 100% { opacity: .25; } }
+  @keyframes load { from { width: 0; } to { width: 100%; } }
+  ::selection { background: #D9232A; color: #fff; }
+</style>
+</helmet>
+
+<div style="font-family:'DM Sans',Helvetica,Arial,sans-serif;color:#0A0A0A;background:#FFFFFF;min-height:100vh">
+
+<sc-if value="{{ splashOn }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Splash" onClick="{{ hideSplash }}" style="position:fixed;inset:0;z-index:200;background:#0C2044;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;opacity:{{ splashOpacity }};transition:opacity .45s ease">
+  <div style="position:absolute;top:0;left:0;right:0;height:5px;display:flex">
+    <div style="flex:1;background:#FF9933"></div><div style="flex:1;background:#FFFFFF"></div><div style="flex:1;background:#138808"></div>
+  </div>
+  <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.045) 0 1px,transparent 1px 96px)"></div>
+  <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:clamp(14px,3vh,26px);padding:24px">
+    <div style="background:#fff;border-radius:14px;padding:clamp(10px,2vh,18px) clamp(16px,3vh,26px);box-shadow:0 24px 60px rgba(4,14,36,.55)">
+      <img src="logo.jpg" alt="India News 18 — Eighteen" style="width:min(340px,66vw,34vh);height:auto;display:block;mix-blend-mode:multiply" />
+    </div>
+    <div style="text-align:center">
+      <div style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(22px,3.4vh,30px);color:#fff;line-height:1.2">City &amp; District Desk</div>
+      <div style="font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:#8FA6CE;margin-top:10px">Eleven wards · Forty villages · Since 2016</div>
+    </div>
+    <div style="width:min(280px,64vw);height:3px;background:rgba(255,255,255,.16);border-radius:2px;overflow:hidden">
+      <div style="height:100%;background:#D9232A;animation:load 2.1s ease-in-out forwards"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#8FA6CE">
+      <span style="width:7px;height:7px;border-radius:50%;background:#D9232A;animation:blink 1.4s infinite"></span>Loading today's bulletin
+    </div>
+    <div style="font-size:11px;letter-spacing:.1em;color:#5C769F">Tap anywhere to skip</div>
+  </div>
+</div>
+</sc-if>
+
+
+<sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+<header style="position:sticky;top:0;z-index:40;background:#0C2044;color:#FFFFFF">
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:24px;height:78px">
+    <div style="display:flex;align-items:center;gap:14px;cursor:pointer" onClick="{{ goHome }}">
+      <div style="background:#fff;border-radius:6px;padding:4px 8px;display:flex;align-items:center">
+        <div style="position:relative;width:104px;height:52px;overflow:hidden">
+          <img src="logo.jpg" alt="India News 18 — Eighteen" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:112px;height:112px;display:block;mix-blend-mode:multiply" />
+        </div>
+      </div>
+      <div style="border-left:1px solid #1E3A6B;padding-left:12px">
+        <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#fff">City &amp; District Desk</div>
+        <div style="font-size:10.5px;letter-spacing:.08em;color:#8FA6CE;margin-top:3px">Local news since 2016</div>
+      </div>
+    </div>
+    <div style="flex:1"></div>
+    <div style="font-size:12px;color:#A8A6A0;letter-spacing:.06em;text-transform:uppercase;font-variant-numeric:tabular-nums">{{ clock }}</div>
+    <div style="width:1px;height:22px;background:#1E3A6B"></div>
+    <div style="display:flex;align-items:center;gap:8px;border:1px solid #1E3A6B;border-radius:8px;padding:7px 12px;min-width:180px;cursor:text" style-hover="border-color:#4A4A46">
+      <div style="width:11px;height:11px;border:1.5px solid #8B8983;border-radius:50%"></div>
+      <div style="width:5px;height:1.5px;background:#8B8983;transform:rotate(45deg);margin-left:-5px;margin-top:6px"></div>
+      <span style="font-size:13px;color:#8B8983;margin-left:4px">Search news</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;padding:6px;cursor:pointer">
+      <div style="width:19px;height:2px;background:#fff"></div>
+      <div style="width:19px;height:2px;background:#fff"></div>
+      <div style="width:19px;height:2px;background:#fff"></div>
+    </div>
+  </div>
+  <nav style="border-top:1px solid #1E3A6B;background:#0C2044">
+    <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:stretch;gap:2px;height:44px">
+      <a onClick="{{ goHome }}" style="display:flex;align-items:center;padding:0 14px;font-size:13px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;color:{{ navHomeColor }};border-bottom:2px solid {{ navHomeMark }}" style-hover="color:#FFFFFF">Home</a>
+      <a onClick="{{ goCity }}" style="display:flex;align-items:center;padding:0 14px;font-size:13px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#C9C7C1;cursor:pointer;border-bottom:2px solid transparent" style-hover="color:#FFFFFF;border-bottom-color:#D9232A">City</a>
+      <a onClick="{{ goCrime }}" style="display:flex;align-items:center;padding:0 14px;font-size:13px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#C9C7C1;cursor:pointer;border-bottom:2px solid transparent" style-hover="color:#FFFFFF;border-bottom-color:#D9232A">Crime</a>
+      <a onClick="{{ goPolitics }}" style="display:flex;align-items:center;padding:0 14px;font-size:13px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#C9C7C1;cursor:pointer;border-bottom:2px solid transparent" style-hover="color:#FFFFFF;border-bottom-color:#D9232A">Politics</a>
+      <a onClick="{{ goBusiness }}" style="display:flex;align-items:center;padding:0 14px;font-size:13px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#C9C7C1;cursor:pointer;border-bottom:2px solid transparent" style-hover="color:#FFFFFF;border-bottom-color:#D9232A">Business</a>
+      <a onClick="{{ goSports }}" style="display:flex;align-items:center;padding:0 14px;font-size:13px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#C9C7C1;cursor:pointer;border-bottom:2px solid transparent" style-hover="color:#FFFFFF;border-bottom-color:#D9232A">Sports</a>
+      <a onClick="{{ goEntertainment }}" style="display:flex;align-items:center;padding:0 14px;font-size:13px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#C9C7C1;cursor:pointer;border-bottom:2px solid transparent" style-hover="color:#FFFFFF;border-bottom-color:#D9232A">Entertainment</a>
+      <a onClick="{{ goVideos }}" style="display:flex;align-items:center;gap:7px;padding:0 14px;font-size:13px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;color:{{ navVideoColor }};border-bottom:2px solid {{ navVideoMark }}" style-hover="border-bottom-color:#D9232A">
+        <span style="width:0;height:0;border-left:8px solid #D9232A;border-top:5px solid transparent;border-bottom:5px solid transparent"></span>Videos</a>
+      <div style="flex:1"></div>
+      <a onClick="{{ goAbout }}" style="display:flex;align-items:center;padding:0 12px;font-size:12px;letter-spacing:.04em;color:#8B8983;cursor:pointer" style-hover="color:#FFFFFF">About</a>
+      <a onClick="{{ goContact }}" style="display:flex;align-items:center;padding:0 12px;font-size:12px;letter-spacing:.04em;color:#8B8983;cursor:pointer" style-hover="color:#FFFFFF">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<sc-if value="{{ showTicker }}" hint-placeholder-val="{{ true }}">
+<div style="background:#08183A;border-bottom:1px solid #E4E1D8;overflow:hidden;display:flex;align-items:stretch;height:40px">
+  <div style="display:flex;align-items:center;gap:7px;background:#D9232A;color:#fff;padding:0 14px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;flex-shrink:0">
+    <span style="width:7px;height:7px;border-radius:50%;background:#fff;animation:blink 1.4s infinite"></span>Live
+  </div>
+  <div style="flex:1;overflow:hidden;display:flex;align-items:center;position:relative">
+    <div style="display:flex;gap:0;white-space:nowrap;animation:ticker 46s linear infinite;will-change:transform">
+      <div style="display:flex;align-items:center">
+        <sc-for list="{{ ticker }}" as="t" hint-placeholder-count="4"><span style="color:#EDEBE4;font-size:13.5px;padding:0 18px;border-right:1px solid #1E3A6B">{{ t }}</span></sc-for>
+      </div>
+      <div style="display:flex;align-items:center">
+        <sc-for list="{{ ticker }}" as="t" hint-placeholder-count="4"><span style="color:#EDEBE4;font-size:13.5px;padding:0 18px;border-right:1px solid #1E3A6B">{{ t }}</span></sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+</sc-if>
+
+<!-- ===================== HOME ===================== -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<main data-screen-label="Home (desktop)">
+  <section style="max-width:1280px;margin:0 auto;padding:28px 24px 8px;display:grid;grid-template-columns:1.62fr 1fr;gap:32px;align-items:start">
+    <article style="cursor:pointer" onClick="{{ goArticle }}">
+      <div style="position:relative;border-radius:10px;overflow:hidden;border:1px solid #E4E1D8">
+        <div style="aspect-ratio:16/9;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px);display:flex;align-items:center;justify-content:center;font:11px/1 ui-monospace,Menlo,monospace;color:#8A8880;letter-spacing:.08em">LEAD PHOTO — 1600×900</div>
+        <div style="position:absolute;top:14px;left:14px;display:flex;gap:8px">
+          <span style="background:#D9232A;color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:4px">Breaking</span>
+          <span style="background:rgba(12,32,68,.85);color:#fff;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:4px">City</span>
+        </div>
+      </div>
+      <h1 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:42px;line-height:1.1;margin:18px 0 0;text-wrap:pretty;letter-spacing:-.01em">Ward 7 goes without water for a third day as pump repair drags on</h1>
+      <p style="font-size:16.5px;line-height:1.55;color:#444441;margin:12px 0 0;max-width:62ch;text-wrap:pretty">Four lanes behind the vegetable market have been buying tanker water since Sunday. The corporation says the replacement motor arrives Wednesday. The contractor told us Thursday.</p>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:14px;font-size:12.5px;color:#6E6C66">
+        <span style="font-weight:500;color:#444441">Reported by Sneha Kulkarni</span><span>·</span><span>City desk</span><span>·</span><span>Updated 20 min ago</span>
+      </div>
+    </article>
+    <div style="display:flex;flex-direction:column;gap:0;border-top:2px solid #0A0A0A">
+      <sc-for list="{{ secondary }}" as="s" hint-placeholder-count="4">
+      <article onClick="{{ goArticle }}" style="display:grid;grid-template-columns:1fr 104px;gap:14px;padding:16px 0;border-bottom:1px solid #E4E1D8;cursor:pointer" style-hover="background:#FAF9F5">
+        <div>
+          <span style="display:inline-block;background:rgba(217,35,42,.10);color:#9E151B;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 7px;border-radius:999px">{{ s.cat }}</span>
+          <h3 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:19px;line-height:1.24;margin:8px 0 0;text-wrap:pretty">{{ s.title }}</h3>
+          <div style="font-size:11.5px;color:#8A8880;margin-top:7px">{{ s.time }}</div>
+        </div>
+        <div style="aspect-ratio:1/1;border-radius:8px;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px)"></div>
+      </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:#0C2044;margin-top:36px;padding:34px 0 38px">
+    <div style="max-width:1280px;margin:0 auto;padding:0 24px">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:20px">
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:27px;color:#fff;margin:0">Featured Videos</h2>
+        <span style="font-size:12px;color:#8B8983;letter-spacing:.04em">Bulletins, ground reports and interviews shot in the city</span>
+        <div style="flex:1"></div>
+        <a onClick="{{ goVideos }}" style="font-size:12.5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#378ADD;cursor:pointer">All shows →</a>
+      </div>
+      <div style="display:flex;gap:18px;overflow-x:auto;padding-bottom:10px;scrollbar-width:thin">
+        <sc-for list="{{ videos }}" as="v" hint-placeholder-count="5">
+        <article onClick="{{ goVideo }}" style="flex:0 0 300px;cursor:pointer">
+          <div style="position:relative;border-radius:10px;overflow:hidden">
+            <div style="aspect-ratio:16/9;background-color:#12294F;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 6px,transparent 6px 12px)"></div>
+            <div style="position:absolute;inset:0;background:rgba(10,10,10,.34);display:flex;align-items:center;justify-content:center">
+              <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center">
+                <span style="width:0;height:0;border-left:14px solid #0A0A0A;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px"></span>
+              </div>
+            </div>
+            <span style="position:absolute;right:10px;bottom:10px;background:rgba(255,255,255,.95);color:#0A0A0A;font-size:11px;font-weight:700;padding:3px 7px;border-radius:4px;font-variant-numeric:tabular-nums">{{ v.dur }}</span>
+          </div>
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D9232A;margin-top:11px">{{ v.cat }}</div>
+          <h3 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:18px;line-height:1.26;color:#fff;margin:6px 0 0;text-wrap:pretty">{{ v.title }}</h3>
+          <div style="font-size:11.5px;color:#8B8983;margin-top:7px">{{ v.time }}</div>
+        </article>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1280px;margin:0 auto;padding:38px 24px 0;display:grid;grid-template-columns:1fr 316px;gap:44px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:38px">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;border-bottom:2px solid #0A0A0A;padding-bottom:10px;margin-bottom:20px">
+          <span style="width:9px;height:20px;background:#D9232A"></span>
+          <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:25px;margin:0">City &amp; Civic</h2>
+          <div style="flex:1"></div>
+          <a onClick="{{ goCity }}" style="font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#0A0A0A;cursor:pointer" style-hover="color:#D9232A">View all →</a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+          <sc-for list="{{ politics }}" as="a" hint-placeholder-count="3">
+          <article onClick="{{ goArticle }}" style="border:1px solid #E4E1D8;border-radius:10px;overflow:hidden;background:#fff;cursor:pointer" style-hover="box-shadow:0 6px 18px rgba(10,10,10,.09)">
+            <div style="aspect-ratio:16/10;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px)"></div>
+            <div style="padding:13px 14px 15px">
+              <span style="display:inline-block;background:rgba(217,35,42,.10);color:#9E151B;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 7px;border-radius:999px">{{ a.cat }}</span>
+              <h3 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:18.5px;line-height:1.25;margin:9px 0 0;text-wrap:pretty">{{ a.title }}</h3>
+              <div style="font-size:11.5px;color:#8A8880;margin-top:9px">{{ a.time }}</div>
+            </div>
+          </article>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="background:#F1EFE8;border-radius:12px;padding:24px">
+        <div style="display:flex;align-items:center;gap:12px;border-bottom:2px solid #0A0A0A;padding-bottom:10px;margin-bottom:20px">
+          <span style="width:9px;height:20px;background:#D9232A"></span>
+          <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:25px;margin:0">Business</h2>
+          <div style="flex:1"></div>
+          <a onClick="{{ goBusiness }}" style="font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#0A0A0A;cursor:pointer" style-hover="color:#D9232A">View all →</a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px">
+          <sc-for list="{{ business }}" as="a" hint-placeholder-count="4">
+          <article onClick="{{ goArticle }}" style="display:grid;grid-template-columns:118px 1fr;gap:14px;background:#fff;border:1px solid #E4E1D8;border-radius:10px;padding:12px;cursor:pointer" style-hover="box-shadow:0 6px 18px rgba(10,10,10,.09)">
+            <div style="aspect-ratio:1/1;border-radius:8px;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px)"></div>
+            <div>
+              <span style="display:inline-block;background:rgba(217,35,42,.10);color:#9E151B;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 7px;border-radius:999px">{{ a.cat }}</span>
+              <h3 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:17px;line-height:1.26;margin:9px 0 0;text-wrap:pretty">{{ a.title }}</h3>
+              <div style="font-size:11.5px;color:#8A8880;margin-top:8px">{{ a.time }}</div>
+            </div>
+          </article>
+          </sc-for>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;border-bottom:2px solid #0A0A0A;padding-bottom:10px;margin-bottom:20px">
+          <span style="width:9px;height:20px;background:#D9232A"></span>
+          <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:25px;margin:0">Sports</h2>
+          <div style="flex:1"></div>
+          <a onClick="{{ goSports }}" style="font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#0A0A0A;cursor:pointer" style-hover="color:#D9232A">View all →</a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+          <sc-for list="{{ sports }}" as="a" hint-placeholder-count="3">
+          <article onClick="{{ goArticle }}" style="border:1px solid #E4E1D8;border-radius:10px;overflow:hidden;background:#fff;cursor:pointer" style-hover="box-shadow:0 6px 18px rgba(10,10,10,.09)">
+            <div style="aspect-ratio:16/10;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px)"></div>
+            <div style="padding:13px 14px 15px">
+              <span style="display:inline-block;background:rgba(217,35,42,.10);color:#9E151B;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 7px;border-radius:999px">{{ a.cat }}</span>
+              <h3 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:18.5px;line-height:1.25;margin:9px 0 0;text-wrap:pretty">{{ a.title }}</h3>
+              <div style="font-size:11.5px;color:#8A8880;margin-top:9px">{{ a.time }}</div>
+            </div>
+          </article>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <aside style="position:sticky;top:120px;display:flex;flex-direction:column;gap:24px">
+      <sc-if value="{{ showTrending }}" hint-placeholder-val="{{ true }}">
+      <div style="border:1px solid #E4E1D8;border-radius:12px;overflow:hidden">
+        <div style="background:#0C2044;color:#fff;padding:13px 16px;display:flex;align-items:center;gap:9px">
+          <span style="width:7px;height:7px;border-radius:50%;background:#D9232A"></span>
+          <span style="font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Most read today</span>
+        </div>
+        <ol style="margin:0;padding:4px 0;list-style:none;counter-reset:t">
+          <sc-for list="{{ trending }}" as="t" hint-placeholder-count="7">
+          <li onClick="{{ goArticle }}" style="display:grid;grid-template-columns:34px 1fr;gap:6px;padding:13px 16px;border-bottom:1px solid #EFEDE6;cursor:pointer" style-hover="background:#FAF9F5">
+            <span style="font-family:'DM Serif Display',Georgia,serif;font-size:20px;color:#D9232A;line-height:1.1">{{ t.n }}</span>
+            <span style="font-size:14.5px;line-height:1.35;font-weight:500;text-wrap:pretty">{{ t.title }}</span>
+          </li>
+          </sc-for>
+        </ol>
+      </div>
+      </sc-if>
+      <div style="border:1px solid #E4E1D8;border-radius:12px;padding:18px;background:#F1EFE8">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#444441">Live from the corporation</div>
+        <div style="display:flex;gap:12px;margin-top:14px;cursor:pointer" onClick="{{ goVideo }}">
+          <div style="position:relative;flex:0 0 120px;border-radius:8px;overflow:hidden">
+            <div style="aspect-ratio:16/9;background-color:#12294F;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 6px,transparent 6px 12px)"></div>
+            <span style="position:absolute;left:6px;top:6px;background:#D9232A;color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.08em;padding:2px 5px;border-radius:3px">LIVE</span>
+          </div>
+          <div>
+            <h4 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:16px;line-height:1.25;margin:0;text-wrap:pretty">General body meeting: ward 7 water item on the floor</h4>
+            <div style="font-size:11.5px;color:#378ADD;margin-top:6px;font-weight:500">1,240 watching</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <section style="max-width:1280px;margin:44px auto 0;padding:0 24px">
+    <div style="background:#0C2044;border-radius:12px;padding:34px 38px;display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:center">
+      <div>
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:30px;color:#fff;margin:0;text-wrap:pretty">The morning list, in your inbox</h2>
+        <p style="font-size:15px;line-height:1.55;color:#B7B5AF;margin:10px 0 0;max-width:52ch">Ward-wise water and power cuts, mandi rates, court dates and the day's bulletin — sent by 7 a.m. Free, and you can leave any time.</p>
+        <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;padding:0 16px;height:44px;border:1px solid #1E3A6B;border-radius:8px;color:#8B8983;font-size:14px;min-width:250px">you@example.com</div>
+          <button style="height:44px;padding:0 22px;background:#FFFFFF;color:#0A0A0A;border:0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;letter-spacing:.02em;cursor:pointer" style-hover="background:#EDEBE4">Subscribe</button>
+        </div>
+      </div>
+      <div style="border-left:1px solid #1E3A6B;padding-left:36px">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8B8983">Or follow on WhatsApp</div>
+        <p style="font-size:14.5px;line-height:1.5;color:#B7B5AF;margin:10px 0 18px">Breaking alerts only — about four messages a day.</p>
+        <button style="height:44px;padding:0 20px;background:#D9232A;color:#fff;border:0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer" style-hover="background:#AF171D">Join the channel</button>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<!-- ===================== VIDEOS HUB ===================== -->
+<sc-if value="{{ isVideos }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Videos hub" style="background:#0C2044;color:#fff;padding-bottom:48px">
+  <section style="max-width:1280px;margin:0 auto;padding:34px 24px 0">
+    <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#D9232A">Video</div>
+        <h1 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:44px;margin:8px 0 0">Bulletins &amp; Ground Reports</h1>
+        <p style="font-size:15.5px;color:#B7B5AF;margin:10px 0 0;max-width:64ch">Three bulletins a week plus field reports, shot by our own camera unit across the city and the taluka.</p>
+      </div>
+      <div style="flex:1"></div>
+      <div style="display:flex;gap:8px">
+        <span style="border:1px solid #D9232A;background:#D9232A;color:#fff;font-size:12.5px;font-weight:500;padding:8px 14px;border-radius:999px;cursor:pointer">All</span>
+        <sc-for list="{{ videoFilters }}" as="f" hint-placeholder-count="4"><span style="border:1px solid #1E3A6B;color:#C9C7C1;font-size:12.5px;padding:8px 14px;border-radius:999px;white-space:nowrap;cursor:pointer" style-hover="border-color:#8B8983">{{ f }}</span></sc-for>
+      </div>
+    </div>
+
+    <div onClick="{{ goVideo }}" style="display:grid;grid-template-columns:1.5fr 1fr;gap:26px;margin-top:28px;background:#08183A;border:1px solid #1E3A6B;border-radius:12px;padding:20px;cursor:pointer">
+      <div style="position:relative;border-radius:10px;overflow:hidden">
+        <div style="aspect-ratio:16/9;background-color:#12294F;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 6px,transparent 6px 12px)"></div>
+        <div style="position:absolute;inset:0;background:rgba(10,10,10,.3);display:flex;align-items:center;justify-content:center">
+          <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center">
+            <span style="width:0;height:0;border-left:19px solid #0A0A0A;border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:5px"></span>
+          </div>
+        </div>
+        <span style="position:absolute;left:12px;top:12px;background:#D9232A;color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;padding:4px 8px;border-radius:4px">LIVE</span>
+        <span style="position:absolute;right:12px;bottom:12px;background:rgba(255,255,255,.95);color:#0A0A0A;font-size:11.5px;font-weight:700;padding:4px 8px;border-radius:4px">2:14:06</span>
+      </div>
+      <div style="align-self:center">
+        <div style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#378ADD">Live · Municipal corporation</div>
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:29px;line-height:1.16;margin:10px 0 0;text-wrap:pretty">General body meeting: the ward 7 water item, live from the hall</h2>
+        <p style="font-size:14.5px;line-height:1.55;color:#B7B5AF;margin:12px 0 0">Our reporter is inside with a single camera. We stay on till the item is taken up, and read out your questions from the WhatsApp channel.</p>
+        <div style="font-size:12px;color:#8B8983;margin-top:14px">1,240 watching now</div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:24px;margin:40px 0 18px">Latest episodes</h3>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <sc-for list="{{ allVideos }}" as="v" hint-placeholder-count="8">
+      <article onClick="{{ goVideo }}" style="cursor:pointer">
+        <div style="position:relative;border-radius:10px;overflow:hidden">
+          <div style="aspect-ratio:16/9;background-color:#12294F;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 6px,transparent 6px 12px)"></div>
+          <div style="position:absolute;inset:0;background:rgba(10,10,10,.34);display:flex;align-items:center;justify-content:center">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center">
+              <span style="width:0;height:0;border-left:13px solid #0A0A0A;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:4px"></span>
+            </div>
+          </div>
+          <span style="position:absolute;right:10px;bottom:10px;background:rgba(255,255,255,.95);color:#0A0A0A;font-size:11px;font-weight:700;padding:3px 7px;border-radius:4px;font-variant-numeric:tabular-nums">{{ v.dur }}</span>
+        </div>
+        <div style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D9232A;margin-top:11px">{{ v.cat }}</div>
+        <h4 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:17.5px;line-height:1.26;margin:6px 0 0;text-wrap:pretty">{{ v.title }}</h4>
+        <div style="font-size:11.5px;color:#8B8983;margin-top:7px">{{ v.time }}</div>
+      </article>
+      </sc-for>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<!-- ===================== CATEGORY ===================== -->
+<sc-if value="{{ isCategory }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Category page">
+  <section style="border-bottom:1px solid #E4E1D8;background:#F1EFE8">
+    <div style="max-width:1280px;margin:0 auto;padding:28px 24px">
+      <div style="font-size:11.5px;color:#8A8880;letter-spacing:.04em">Home <span style="color:#C4C1B8">/</span> {{ cat }}</div>
+      <div style="display:flex;align-items:flex-end;gap:20px;margin-top:10px;flex-wrap:wrap">
+        <h1 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:46px;margin:0">{{ cat }}</h1>
+        <p style="font-size:14.5px;color:#444441;margin:0 0 8px;max-width:56ch">{{ catBlurb }}</p>
+        <div style="flex:1"></div>
+        <div style="display:flex;gap:8px;margin-bottom:6px">
+          <span style="background:#0C2044;color:#fff;font-size:12.5px;font-weight:500;padding:8px 14px;border-radius:999px;cursor:pointer">Latest</span>
+          <span style="border:1px solid #D8D5CC;color:#444441;font-size:12.5px;padding:8px 14px;border-radius:999px;cursor:pointer" style-hover="border-color:#0A0A0A">Most read</span>
+          <span style="border:1px solid #D8D5CC;color:#444441;font-size:12.5px;padding:8px 14px;border-radius:999px;cursor:pointer" style-hover="border-color:#0A0A0A">Video only</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="max-width:1280px;margin:0 auto;padding:28px 24px 0;display:grid;grid-template-columns:1fr 316px;gap:44px;align-items:start">
+    <div>
+      <article onClick="{{ goArticle }}" style="display:grid;grid-template-columns:1.1fr 1fr;gap:26px;padding-bottom:26px;border-bottom:2px solid #0A0A0A;cursor:pointer">
+        <div style="border-radius:10px;overflow:hidden;border:1px solid #E4E1D8">
+          <div style="aspect-ratio:16/10;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px);display:flex;align-items:center;justify-content:center;font:11px/1 ui-monospace,Menlo,monospace;color:#8A8880;letter-spacing:.08em">TOP STORY PHOTO</div>
+        </div>
+        <div style="align-self:center">
+          <span style="display:inline-block;background:rgba(217,35,42,.10);color:#9E151B;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 7px;border-radius:999px">{{ cat }}</span>
+          <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:33px;line-height:1.14;margin:11px 0 0;text-wrap:pretty">{{ catLead.title }}</h2>
+          <p style="font-size:15.5px;line-height:1.55;color:#444441;margin:11px 0 0">{{ catLead.excerpt }}</p>
+          <div style="font-size:12.5px;color:#6E6C66;margin-top:12px">{{ catLead.byline }}</div>
+        </div>
+      </article>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:26px">
+        <sc-for list="{{ catList }}" as="a" hint-placeholder-count="9">
+        <article onClick="{{ goArticle }}" style="border:1px solid #E4E1D8;border-radius:10px;overflow:hidden;background:#fff;cursor:pointer" style-hover="box-shadow:0 6px 18px rgba(10,10,10,.09)">
+          <div style="aspect-ratio:16/10;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px)"></div>
+          <div style="padding:13px 14px 16px">
+            <span style="display:inline-block;background:rgba(217,35,42,.10);color:#9E151B;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 7px;border-radius:999px">{{ a.cat }}</span>
+            <h3 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:18px;line-height:1.25;margin:9px 0 0;text-wrap:pretty">{{ a.title }}</h3>
+            <div style="font-size:11.5px;color:#8A8880;margin-top:9px">{{ a.time }}</div>
+          </div>
+        </article>
+        </sc-for>
+      </div>
+      <div style="display:flex;justify-content:center;padding:34px 0 8px">
+        <button style="height:46px;padding:0 28px;background:#0C2044;color:#fff;border:0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:.04em;cursor:pointer" style-hover="background:#173059">Load more stories</button>
+      </div>
+    </div>
+    <aside style="display:flex;flex-direction:column;gap:24px">
+      <div style="border:1px solid #E4E1D8;border-radius:12px;overflow:hidden">
+        <div style="background:#0C2044;color:#fff;padding:13px 16px;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Most read in {{ cat }}</div>
+        <ol style="margin:0;padding:4px 0;list-style:none">
+          <sc-for list="{{ trending }}" as="t" hint-placeholder-count="7">
+          <li onClick="{{ goArticle }}" style="display:grid;grid-template-columns:34px 1fr;gap:6px;padding:13px 16px;border-bottom:1px solid #EFEDE6;cursor:pointer" style-hover="background:#FAF9F5">
+            <span style="font-family:'DM Serif Display',Georgia,serif;font-size:20px;color:#D9232A;line-height:1.1">{{ t.n }}</span>
+            <span style="font-size:14.5px;line-height:1.35;font-weight:500;text-wrap:pretty">{{ t.title }}</span>
+          </li>
+          </sc-for>
+        </ol>
+      </div>
+      <div onClick="{{ goVideo }}" style="border:1px solid #E4E1D8;border-radius:12px;padding:16px;cursor:pointer">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#444441;margin-bottom:12px">Watch on this beat</div>
+        <div style="position:relative;border-radius:8px;overflow:hidden">
+          <div style="aspect-ratio:16/9;background-color:#12294F;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 6px,transparent 6px 12px)"></div>
+          <div style="position:absolute;inset:0;background:rgba(10,10,10,.34);display:flex;align-items:center;justify-content:center">
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center">
+              <span style="width:0;height:0;border-left:12px solid #0A0A0A;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px"></span>
+            </div>
+          </div>
+          <span style="position:absolute;right:8px;bottom:8px;background:rgba(255,255,255,.95);color:#0A0A0A;font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:4px">18:24</span>
+        </div>
+        <h4 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:16.5px;line-height:1.25;margin:11px 0 0;text-wrap:pretty">The Evening Brief: the budget standoff, explained</h4>
+      </div>
+    </aside>
+  </section>
+</main>
+</sc-if>
+
+<!-- ===================== ARTICLE ===================== -->
+<sc-if value="{{ isArticle }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Article detail">
+  <div style="max-width:1160px;margin:0 auto;padding:26px 24px 0">
+    <div style="font-size:11.5px;color:#8A8880">Home <span style="color:#C4C1B8">/</span> City <span style="color:#C4C1B8">/</span> Water supply</div>
+    <div style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:28px;margin-top:18px">
+      <div style="position:sticky;top:130px;align-self:start;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8A8880;text-align:center;margin-bottom:2px">Share</div>
+        <sc-for list="{{ shareRail }}" as="s" hint-placeholder-count="4">
+        <div style="width:44px;height:44px;border:1px solid #E4E1D8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:#444441;cursor:pointer" style-hover="border-color:#0A0A0A;color:#0A0A0A">{{ s }}</div>
+        </sc-for>
+      </div>
+      <article>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="background:#D9232A;color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:4px">Live updates</span>
+          <span style="background:rgba(217,35,42,.10);color:#9E151B;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:4px 8px;border-radius:999px">City</span>
+        </div>
+        <h1 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:52px;line-height:1.06;letter-spacing:-.015em;margin:16px 0 0;max-width:22ch;text-wrap:pretty">Ward 7 goes without water for a third day</h1>
+        <p style="font-family:'DM Serif Display',Georgia,serif;font-size:22px;line-height:1.42;color:#444441;margin:16px 0 0;max-width:680px">Four lanes behind the vegetable market have been buying tanker water since Sunday. The corporation and the contractor give different dates for the repair.</p>
+        <div style="display:flex;align-items:center;gap:14px;margin:22px 0 0;padding:16px 0;border-top:1px solid #E4E1D8;border-bottom:1px solid #E4E1D8;max-width:680px;flex-wrap:wrap">
+          <div style="width:40px;height:40px;border-radius:50%;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.06) 0 5px,transparent 5px 10px)"></div>
+          <div>
+            <div style="font-size:14px;font-weight:700">Sneha Kulkarni</div>
+            <div style="font-size:12.5px;color:#6E6C66">City Reporter · Filed from Bhaji Market Lane</div>
+          </div>
+          <div style="flex:1"></div>
+          <div style="font-size:12.5px;color:#6E6C66;text-align:right">
+            <div>Published 15 Aug 2026, 08:42</div>
+            <div style="color:#D9232A;font-weight:500">Updated 6 min ago</div>
+          </div>
+        </div>
+        <figure style="margin:26px 0 0;max-width:880px">
+          <div style="border-radius:10px;overflow:hidden;border:1px solid #E4E1D8">
+            <div style="aspect-ratio:16/9;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px);display:flex;align-items:center;justify-content:center;font:11px/1 ui-monospace,Menlo,monospace;color:#8A8880;letter-spacing:.08em">FEATURED PHOTO — 1600×900</div>
+          </div>
+          <figcaption style="font-size:12.5px;color:#6E6C66;margin-top:9px;line-height:1.5">Residents of Bhaji Market Lane filling cans from a private tanker on Tuesday morning, the third day without supply. <span style="color:#8A8880">Photo: Imran Shaikh / Breaking Edition</span></figcaption>
+        </figure>
+        <div style="max-width:680px;margin-top:30px;font-size:18px;line-height:1.68;color:#1A1A18">
+          <p style="margin:0 0 20px">Taps in four lanes behind the vegetable market have been dry since Sunday morning, after the motor at the ward 7 pumping station burned out during a voltage drop. About 600 households are affected.</p>
+          <p style="margin:0 0 20px">Residents say they are spending ₹400 to ₹600 a day on private tankers, which are now making three trips to the lane instead of one. Two families told us they have shifted their children to relatives in the east ward until the supply returns.</p>
+          <p style="margin:0 0 20px">The corporation's water department says a replacement motor has been ordered and will be installed by Wednesday evening. The contractor handling the pumping station told this reporter on Tuesday that the part reaches the city only on Thursday.</p>
+          <blockquote style="margin:28px 0;padding:4px 0 4px 22px;border-left:3px solid #D9232A">
+            <p style="font-family:'DM Serif Display',Georgia,serif;font-size:26px;line-height:1.34;margin:0;color:#0A0A0A;text-wrap:pretty">We have paid the tax for eleven years. Three days without water, and nobody from the office has come to see the lane.</p>
+            <cite style="display:block;font-family:'DM Sans',sans-serif;font-style:normal;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#6E6C66;margin-top:12px">Shobha Jadhav, resident, Bhaji Market Lane</cite>
+          </blockquote>
+          <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:28px;line-height:1.2;margin:32px 0 14px">What the corporation has said</h2>
+          <p style="margin:0 0 20px">The ward 7 corporator raised the item at Monday's standing committee, where ₹2.4 crore was cleared for replacing the pipeline along the market stretch. That work is separate from the pump, and tenders for it have not been called yet.</p>
+          <p style="margin:0 0 20px">Two tankers have been sent by the corporation since Monday evening, one in the morning and one after 6 p.m. Residents say the evening tanker did not arrive on Tuesday.</p>
+          <div style="border:1px solid #E4E1D8;border-left:4px solid #0A0A0A;border-radius:8px;padding:18px 20px;margin:28px 0;background:#F1EFE8">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#444441">Also read</div>
+            <a onClick="{{ goArticle }}" style="display:block;font-family:'DM Serif Display',Georgia,serif;font-size:20px;line-height:1.28;color:#0A0A0A;margin-top:9px;cursor:pointer" style-hover="color:#D9232A">Ward-wise water cut schedule for this week</a>
+          </div>
+          <p style="margin:0 0 20px">We will be at the pumping station on Wednesday evening when the motor is due. If the supply resumes, or does not, this page will be updated the same night.</p>
+        </div>
+        <div style="max-width:680px;margin-top:28px;display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ tags }}" as="t" hint-placeholder-count="5"><span style="border:1px solid #E4E1D8;border-radius:999px;padding:6px 13px;font-size:12.5px;color:#444441;cursor:pointer" style-hover="border-color:#0A0A0A">{{ t }}</span></sc-for>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <section style="background:#F1EFE8;margin-top:52px;padding:40px 0">
+    <div style="max-width:1160px;margin:0 auto;padding:0 24px">
+      <div style="display:flex;align-items:center;gap:12px;border-bottom:2px solid #0A0A0A;padding-bottom:10px;margin-bottom:20px">
+        <span style="width:9px;height:20px;background:#D9232A"></span>
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:24px;margin:0">Related reading</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+        <sc-for list="{{ related }}" as="a" hint-placeholder-count="3">
+        <article onClick="{{ goArticle }}" style="background:#fff;border:1px solid #E4E1D8;border-radius:10px;overflow:hidden;cursor:pointer" style-hover="box-shadow:0 6px 18px rgba(10,10,10,.09)">
+          <div style="aspect-ratio:16/10;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px)"></div>
+          <div style="padding:13px 14px 16px">
+            <span style="display:inline-block;background:rgba(217,35,42,.10);color:#9E151B;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 7px;border-radius:999px">{{ a.cat }}</span>
+            <h3 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:18px;line-height:1.25;margin:9px 0 0;text-wrap:pretty">{{ a.title }}</h3>
+            <div style="font-size:11.5px;color:#8A8880;margin-top:9px">{{ a.time }}</div>
+          </div>
+        </article>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;border-bottom:2px solid #0A0A0A;padding-bottom:10px;margin:40px 0 20px">
+        <span style="width:9px;height:20px;background:#D9232A"></span>
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:24px;margin:0">Watch on this story</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+        <sc-for list="{{ relatedVideos }}" as="v" hint-placeholder-count="3">
+        <article onClick="{{ goVideo }}" style="cursor:pointer">
+          <div style="position:relative;border-radius:10px;overflow:hidden">
+            <div style="aspect-ratio:16/9;background-color:#12294F;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 6px,transparent 6px 12px)"></div>
+            <div style="position:absolute;inset:0;background:rgba(10,10,10,.34);display:flex;align-items:center;justify-content:center">
+              <div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center">
+                <span style="width:0;height:0;border-left:13px solid #0A0A0A;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:4px"></span>
+              </div>
+            </div>
+            <span style="position:absolute;right:10px;bottom:10px;background:rgba(255,255,255,.95);color:#0A0A0A;font-size:11px;font-weight:700;padding:3px 7px;border-radius:4px">{{ v.dur }}</span>
+          </div>
+          <h4 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:17.5px;line-height:1.26;margin:11px 0 0;text-wrap:pretty">{{ v.title }}</h4>
+          <div style="font-size:11.5px;color:#8A8880;margin-top:6px">{{ v.time }}</div>
+        </article>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<!-- ===================== VIDEO DETAIL ===================== -->
+<sc-if value="{{ isVideo }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Video detail">
+  <section style="background:#0C2044;padding:26px 0 34px">
+    <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:30px;align-items:start">
+      <div>
+        <div style="position:relative;border-radius:12px;overflow:hidden;background:#000">
+          <div style="aspect-ratio:16/9;background-color:#1C1B19;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.045) 0 7px,transparent 7px 14px);display:flex;align-items:center;justify-content:center">
+            <div style="width:78px;height:78px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center">
+              <span style="width:0;height:0;border-left:24px solid #0A0A0A;border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:6px"></span>
+            </div>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;padding:14px 16px;background:rgba(8,24,58,.78);display:flex;align-items:center;gap:14px">
+            <span style="width:0;height:0;border-left:12px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent"></span>
+            <div style="flex:1;height:4px;background:rgba(255,255,255,.28);border-radius:2px;overflow:hidden">
+              <div style="width:34%;height:100%;background:#D9232A"></div>
+            </div>
+            <span style="font-size:12px;color:#EDEBE4;font-variant-numeric:tabular-nums">06:18 / 18:24</span>
+            <span style="font-size:11px;color:#EDEBE4;border:1px solid rgba(255,255,255,.4);border-radius:4px;padding:2px 6px">CC</span>
+            <span style="font-size:11px;color:#EDEBE4;border:1px solid rgba(255,255,255,.4);border-radius:4px;padding:2px 6px">HD</span>
+          </div>
+          <div style="position:absolute;top:0;left:0;padding:12px 14px;font:10.5px/1 ui-monospace,Menlo,monospace;color:#8A8880;letter-spacing:.08em">YOUTUBE / VIMEO EMBED</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:20px">
+          <span style="background:rgba(217,35,42,.18);color:#F1918D;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:4px 9px;border-radius:999px">City</span>
+          <span style="border:1px solid #1E3A6B;color:#B7B5AF;font-size:10.5px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;padding:4px 9px;border-radius:999px">Evening Bulletin · Ep. 214</span>
+        </div>
+        <h1 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:38px;line-height:1.12;color:#fff;margin:14px 0 0;max-width:26ch;text-wrap:pretty">Today in the city: water cuts, road work and mandi rates</h1>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px;padding:16px 0;border-top:1px solid #1E3A6B;border-bottom:1px solid #1E3A6B">
+          <div style="width:38px;height:38px;border-radius:50%;background-color:#12294F;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.07) 0 5px,transparent 5px 10px)"></div>
+          <div>
+            <div style="font-size:13.5px;font-weight:700;color:#fff">Read by Rahul Pawar</div>
+            <div style="font-size:12px;color:#8B8983">15 Aug 2026 · 12:40 · 9,420 views</div>
+          </div>
+          <div style="flex:1"></div>
+          <div style="display:flex;gap:8px">
+            <sc-for list="{{ shareRail }}" as="s" hint-placeholder-count="4">
+            <span style="border:1px solid #1E3A6B;border-radius:8px;height:36px;display:flex;align-items:center;padding:0 13px;font-size:12px;font-weight:500;color:#C9C7C1;cursor:pointer" style-hover="border-color:#8B8983;color:#fff">{{ s }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <p style="font-size:16px;line-height:1.65;color:#C9C7C1;margin:20px 0 0;max-width:74ch">Tonight's bulletin: the ward 7 pump repair and what the contractor told us, the lane closure on the old bridge from Monday, today's mandi rates, and the district under-19 final shifting grounds. Subtitles in Marathi and English.</p>
+        <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+          <button style="height:42px;padding:0 18px;background:#fff;color:#0A0A0A;border:0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer" style-hover="background:#EDEBE4">Send on WhatsApp</button>
+          <button style="height:42px;padding:0 18px;background:transparent;color:#fff;border:1px solid #1E3A6B;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer" style-hover="border-color:#8B8983">Subscribe on YouTube</button>
+        </div>
+      </div>
+      <aside>
+        <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8B8983;margin-bottom:14px">Up next</div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ upNext }}" as="v" hint-placeholder-count="5">
+          <article onClick="{{ goVideo }}" style="display:grid;grid-template-columns:138px 1fr;gap:12px;cursor:pointer">
+            <div style="position:relative;border-radius:8px;overflow:hidden">
+              <div style="aspect-ratio:16/9;background-color:#12294F;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 6px,transparent 6px 12px)"></div>
+              <span style="position:absolute;right:6px;bottom:6px;background:rgba(255,255,255,.95);color:#0A0A0A;font-size:10px;font-weight:700;padding:2px 5px;border-radius:3px">{{ v.dur }}</span>
+            </div>
+            <div>
+              <h4 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:15.5px;line-height:1.26;color:#fff;margin:0;text-wrap:pretty">{{ v.title }}</h4>
+              <div style="font-size:11px;color:#8B8983;margin-top:6px">{{ v.cat }} · {{ v.time }}</div>
+            </div>
+          </article>
+          </sc-for>
+        </div>
+      </aside>
+    </div>
+  </section>
+  <section style="max-width:1280px;margin:0 auto;padding:36px 24px 0">
+    <div style="display:flex;align-items:center;gap:12px;border-bottom:2px solid #0A0A0A;padding-bottom:10px;margin-bottom:20px">
+      <span style="width:9px;height:20px;background:#D9232A"></span>
+      <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:24px;margin:0">More videos</h2>
+      <div style="flex:1"></div>
+      <a onClick="{{ goVideos }}" style="font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#0A0A0A;cursor:pointer" style-hover="color:#D9232A">All shows →</a>
+    </div>
+    <div style="display:flex;gap:18px;overflow-x:auto;padding-bottom:12px">
+      <sc-for list="{{ allVideos }}" as="v" hint-placeholder-count="6">
+      <article onClick="{{ goVideo }}" style="flex:0 0 280px;cursor:pointer">
+        <div style="position:relative;border-radius:10px;overflow:hidden;border:1px solid #E4E1D8">
+          <div style="aspect-ratio:16/9;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px)"></div>
+          <div style="position:absolute;inset:0;background:rgba(10,10,10,.3);display:flex;align-items:center;justify-content:center">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center">
+              <span style="width:0;height:0;border-left:12px solid #0A0A0A;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:4px"></span>
+            </div>
+          </div>
+          <span style="position:absolute;right:10px;bottom:10px;background:rgba(12,32,68,.88);color:#fff;font-size:11px;font-weight:700;padding:3px 7px;border-radius:4px">{{ v.dur }}</span>
+        </div>
+        <div style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9E151B;margin-top:11px">{{ v.cat }}</div>
+        <h4 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:17px;line-height:1.26;margin:6px 0 0;text-wrap:pretty">{{ v.title }}</h4>
+        <div style="font-size:11.5px;color:#8A8880;margin-top:6px">{{ v.time }}</div>
+      </article>
+      </sc-for>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<!-- ===================== ABOUT ===================== -->
+<sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="About us">
+  <section style="border-bottom:1px solid #E4E1D8">
+    <div style="max-width:1160px;margin:0 auto;padding:44px 24px;display:grid;grid-template-columns:1.15fr 1fr;gap:48px;align-items:center">
+      <div>
+        <div style="font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#D9232A">About us</div>
+        <h1 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:50px;line-height:1.08;margin:12px 0 0;text-wrap:pretty">A small newsroom that covers one city properly</h1>
+        <p style="font-size:17px;line-height:1.6;color:#444441;margin:18px 0 0;max-width:58ch">Breaking Edition started in 2016 as a YouTube bulletin recorded in one room above a stationery shop. Today nine reporters and stringers cover eleven wards and about forty villages in the taluka, and we record three video bulletins a week.</p>
+        <p style="font-size:17px;line-height:1.6;color:#444441;margin:14px 0 0;max-width:58ch">We are not owned by a party or a builder. The channel runs on local advertising and reader contributions, and every story carries the name of the reporter who went there.</p>
+      </div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E4E1D8">
+        <div style="aspect-ratio:4/5;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px);display:flex;align-items:center;justify-content:center;font:11px/1 ui-monospace,Menlo,monospace;color:#8A8880;letter-spacing:.08em">NEWSROOM PHOTO — 4:5</div>
+      </div>
+    </div>
+  </section>
+  <section style="background:#0C2044">
+    <div style="max-width:1160px;margin:0 auto;padding:34px 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+      <div>
+        <div style="font-family:'DM Serif Display',Georgia,serif;font-size:40px;color:#fff;line-height:1">{{ s.n }}</div>
+        <div style="font-size:13px;color:#8B8983;margin-top:8px;line-height:1.4">{{ s.label }}</div>
+      </div>
+      </sc-for>
+    </div>
+  </section>
+  <section style="max-width:1160px;margin:0 auto;padding:44px 24px 0">
+    <div style="display:flex;align-items:center;gap:12px;border-bottom:2px solid #0A0A0A;padding-bottom:10px;margin-bottom:24px">
+      <span style="width:9px;height:20px;background:#D9232A"></span>
+      <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:26px;margin:0">Who works here</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px">
+      <sc-for list="{{ team }}" as="p" hint-placeholder-count="4">
+      <div>
+        <div style="border-radius:10px;overflow:hidden;border:1px solid #E4E1D8">
+          <div style="aspect-ratio:1/1;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px);display:flex;align-items:center;justify-content:center;font:10.5px/1 ui-monospace,Menlo,monospace;color:#8A8880">PORTRAIT</div>
+        </div>
+        <div style="font-family:'DM Serif Display',Georgia,serif;font-size:20px;margin-top:12px">{{ p.name }}</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9E151B;margin-top:5px">{{ p.role }}</div>
+        <p style="font-size:13.5px;line-height:1.5;color:#444441;margin:9px 0 0">{{ p.bio }}</p>
+      </div>
+      </sc-for>
+    </div>
+  </section>
+  <section style="max-width:1160px;margin:44px auto 0;padding:0 24px">
+    <div style="background:#F1EFE8;border-radius:12px;padding:34px 38px;display:grid;grid-template-columns:1fr 1.3fr;gap:44px">
+      <div>
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:30px;margin:0;line-height:1.15;text-wrap:pretty">How we report</h2>
+        <p style="font-size:15px;line-height:1.6;color:#444441;margin:12px 0 0">Four rules the desk follows on every story, whether it runs as text or in the evening bulletin.</p>
+      </div>
+      <div style="display:grid;gap:18px">
+        <sc-for list="{{ standards }}" as="s" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:26px 1fr;gap:14px;padding-bottom:18px;border-bottom:1px solid #E0DDD4">
+          <div style="font-family:'DM Serif Display',Georgia,serif;font-size:19px;color:#D9232A;line-height:1.2">{{ s.n }}</div>
+          <div>
+            <div style="font-size:15.5px;font-weight:700">{{ s.title }}</div>
+            <p style="font-size:14px;line-height:1.55;color:#444441;margin:6px 0 0">{{ s.body }}</p>
+          </div>
+        </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<!-- ===================== CONTACT ===================== -->
+<sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Contact us">
+  <section style="max-width:1160px;margin:0 auto;padding:40px 24px 0">
+    <div style="font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#D9232A">Contact</div>
+    <h1 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:46px;margin:12px 0 0">Reach the newsroom</h1>
+    <p style="font-size:16.5px;line-height:1.6;color:#444441;margin:12px 0 0;max-width:62ch">Someone is at the desk from 7 a.m. to 11 p.m. For a correction or a complaint about a story, call the editor directly — we reply the same day.</p>
+    <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:40px;margin-top:32px;align-items:start">
+      <form style="border:1px solid #E4E1D8;border-radius:12px;padding:26px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <label style="display:block">
+            <span style="display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#444441;margin-bottom:7px">Name</span>
+            <input type="text" placeholder="Your full name" style="width:100%;box-sizing:border-box;height:44px;padding:0 13px;border:1px solid #D8D5CC;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14.5px;color:#0A0A0A;background:#fff" />
+          </label>
+          <label style="display:block">
+            <span style="display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#444441;margin-bottom:7px">Email</span>
+            <input type="email" placeholder="you@example.com" style="width:100%;box-sizing:border-box;height:44px;padding:0 13px;border:1px solid #D8D5CC;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14.5px;color:#0A0A0A;background:#fff" />
+          </label>
+        </div>
+        <label style="display:block;margin-top:16px">
+          <span style="display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#444441;margin-bottom:7px">Subject</span>
+          <select style="width:100%;box-sizing:border-box;height:44px;padding:0 11px;border:1px solid #D8D5CC;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14.5px;color:#0A0A0A;background:#fff">
+            <option>General enquiry</option>
+            <option>Correction request</option>
+            <option>Press / licensing</option>
+            <option>Careers</option>
+          </select>
+        </label>
+        <label style="display:block;margin-top:16px">
+          <span style="display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#444441;margin-bottom:7px">Message</span>
+          <textarea rows="6" placeholder="Tell us what this is about" style="width:100%;box-sizing:border-box;padding:12px 13px;border:1px solid #D8D5CC;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14.5px;line-height:1.55;color:#0A0A0A;background:#fff;resize:vertical"></textarea>
+        </label>
+        <div style="display:flex;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap">
+          <button type="button" style="height:46px;padding:0 26px;background:#0C2044;color:#fff;border:0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer" style-hover="background:#173059">Send message</button>
+          <span style="font-size:12.5px;color:#6E6C66">We reply from a monitored address. Please do not send unsolicited attachments.</span>
+        </div>
+      </form>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="border:2px solid #D9232A;border-radius:12px;padding:22px;background:#FFF6F5">
+          <div style="display:flex;align-items:center;gap:9px">
+            <span style="width:8px;height:8px;border-radius:50%;background:#D9232A"></span>
+            <span style="font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9E151B">Submit a news tip</span>
+          </div>
+          <p style="font-size:14.5px;line-height:1.55;color:#3A3A37;margin:10px 0 16px">Send a photo, a video or just an address. Tips come to the editor's phone only, and we never publish your name without asking.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button style="height:42px;padding:0 18px;background:#D9232A;color:#fff;border:0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer" style-hover="background:#AF171D">Send a tip on WhatsApp</button>
+            <button style="height:42px;padding:0 18px;background:transparent;color:#0A0A0A;border:1px solid #E9B6B3;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer" style-hover="border-color:#0A0A0A">How we handle tips</button>
+          </div>
+        </div>
+        <div style="border:1px solid #E4E1D8;border-radius:12px;overflow:hidden">
+          <div style="aspect-ratio:16/10;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px);display:flex;align-items:center;justify-content:center;font:11px/1 ui-monospace,Menlo,monospace;color:#8A8880;letter-spacing:.08em">MAP EMBED</div>
+          <div style="padding:18px 20px;display:grid;gap:14px">
+            <div>
+              <div style="font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8A8880">Office</div>
+              <div style="font-size:15px;line-height:1.5;margin-top:6px">Breaking Edition, 2nd floor<br />Above Shree Stationers, Market Road<br />Near Old Bus Stand — 422001</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;border-top:1px solid #EFEDE6;padding-top:14px">
+              <div>
+                <div style="font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8A8880">News desk / WhatsApp</div>
+                <div style="font-size:14.5px;margin-top:6px">+91 98220 41122</div>
+                <a href="#" style="font-size:14.5px">desk@breakingedition.in</a>
+              </div>
+              <div>
+                <div style="font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8A8880">Editor / Ads</div>
+                <div style="font-size:14.5px;margin-top:6px">+91 98220 41130</div>
+                <a href="#" style="font-size:14.5px">rahul@breakingedition.in</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+<footer style="background:#0C2044;color:#fff;margin-top:56px">
+  <div style="max-width:1280px;margin:0 auto;padding:40px 24px 28px;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px">
+    <div>
+      <div style="display:flex;align-items:center;gap:11px">
+        <div style="background:#fff;border-radius:8px;padding:6px 10px;display:inline-flex">
+          <div style="position:relative;width:152px;height:76px;overflow:hidden">
+            <img src="logo.jpg" alt="India News 18 — Eighteen" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:164px;height:164px;display:block;mix-blend-mode:multiply" />
+          </div>
+        </div>
+      </div>
+      <p style="font-size:13.5px;line-height:1.6;color:#8B8983;margin:14px 0 0;max-width:34ch">Local news since 2016. Eleven wards, forty villages, nine reporters and one camera unit.</p>
+      <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+        <sc-for list="{{ socials }}" as="s" hint-placeholder-count="4"><a href="#" style="border:1px solid #1E3A6B;border-radius:7px;padding:7px 12px;font-size:12px;color:#C9C7C1" style-hover="border-color:#8B8983;color:#fff">{{ s }}</a></sc-for>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8B8983">Sections</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+        <sc-for list="{{ footerSections }}" as="f" hint-placeholder-count="6"><a href="#" style="font-size:14px;color:#EDEBE4" style-hover="color:#D9232A">{{ f }}</a></sc-for>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8B8983">Watch</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+        <sc-for list="{{ footerShows }}" as="f" hint-placeholder-count="5"><a href="#" style="font-size:14px;color:#EDEBE4" style-hover="color:#D9232A">{{ f }}</a></sc-for>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8B8983">The agency</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+        <a onClick="{{ goAbout }}" style="font-size:14px;color:#EDEBE4;cursor:pointer" style-hover="color:#D9232A">About us</a>
+        <a onClick="{{ goContact }}" style="font-size:14px;color:#EDEBE4;cursor:pointer" style-hover="color:#D9232A">Contact us</a>
+        <a href="#" style="font-size:14px;color:#EDEBE4" style-hover="color:#D9232A">Editorial standards</a>
+        <a href="#" style="font-size:14px;color:#EDEBE4" style-hover="color:#D9232A">Corrections</a>
+        <a href="#" style="font-size:14px;color:#EDEBE4" style-hover="color:#D9232A">Careers</a>
+        <a href="#" style="font-size:14px;color:#EDEBE4" style-hover="color:#D9232A">Advertise</a>
+      </div>
+    </div>
+  </div>
+  <div style="border-top:1px solid #1E3A6B">
+    <div style="max-width:1280px;margin:0 auto;padding:16px 24px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:#6E6C66">
+      <span>© 2026 Breaking Edition · RNI pending · Published from Market Road</span>
+      <a href="#" style="color:#6E6C66" style-hover="color:#fff">Privacy</a>
+      <a href="#" style="color:#6E6C66" style-hover="color:#fff">Terms</a>
+      <a href="#" style="color:#6E6C66" style-hover="color:#fff">RSS</a>
+      <div style="flex:1"></div>
+      <span>All times IST</span>
+    </div>
+  </div>
+</footer>
+</sc-if>
+
+<!-- ===================== MOBILE HOME ===================== -->
+<sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Home (mobile)" style="background:#F1EFE8;padding:28px 0;display:flex;justify-content:center;min-height:100vh">
+  <div style="width:390px;background:#fff;border:1px solid #D8D5CC;border-radius:22px;overflow:hidden;box-shadow:0 20px 50px rgba(10,10,10,.14);position:relative">
+    <div style="background:#0C2044;color:#fff;padding:10px 16px 0;display:flex;justify-content:space-between;font-size:11.5px;font-variant-numeric:tabular-nums">
+      <span>9:41</span><span>▲ ▮▮▮</span>
+    </div>
+    <div style="background:#0C2044;color:#fff;padding:10px 16px 12px;display:flex;align-items:center;gap:10px">
+      <div style="display:flex;flex-direction:column;gap:3.5px">
+        <div style="width:17px;height:2px;background:#fff"></div>
+        <div style="width:17px;height:2px;background:#fff"></div>
+        <div style="width:17px;height:2px;background:#fff"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex:1;justify-content:center">
+        <div style="background:#fff;border-radius:5px;padding:3px 7px;display:inline-flex">
+          <div style="position:relative;width:88px;height:44px;overflow:hidden">
+            <img src="logo.jpg" alt="India News 18 — Eighteen" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:96px;height:96px;display:block;mix-blend-mode:multiply" />
+          </div>
+        </div>
+      </div>
+      <div style="width:13px;height:13px;border:1.5px solid #C9C7C1;border-radius:50%"></div>
+    </div>
+    <div style="background:#08183A;display:flex;align-items:stretch;height:32px;overflow:hidden">
+      <div style="background:#D9232A;color:#fff;display:flex;align-items:center;gap:5px;padding:0 9px;font-size:10px;font-weight:700;letter-spacing:.1em;flex-shrink:0">
+        <span style="width:5px;height:5px;border-radius:50%;background:#fff;animation:blink 1.4s infinite"></span>LIVE
+      </div>
+      <div style="flex:1;overflow:hidden;display:flex;align-items:center">
+        <div style="display:flex;white-space:nowrap;animation:ticker 30s linear infinite">
+          <div style="display:flex"><sc-for list="{{ ticker }}" as="t" hint-placeholder-count="4"><span style="color:#EDEBE4;font-size:11.5px;padding:0 12px;border-right:1px solid #1E3A6B">{{ t }}</span></sc-for></div>
+          <div style="display:flex"><sc-for list="{{ ticker }}" as="t" hint-placeholder-count="4"><span style="color:#EDEBE4;font-size:11.5px;padding:0 12px;border-right:1px solid #1E3A6B">{{ t }}</span></sc-for></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;overflow-x:auto;padding:11px 16px;border-bottom:1px solid #EFEDE6">
+      <span style="background:#0C2044;color:#fff;font-size:12px;font-weight:500;padding:6px 12px;border-radius:999px;white-space:nowrap">Top</span>
+      <sc-for list="{{ footerSections }}" as="f" hint-placeholder-count="6"><span style="border:1px solid #E4E1D8;color:#444441;font-size:12px;padding:6px 12px;border-radius:999px;white-space:nowrap">{{ f }}</span></sc-for>
+    </div>
+    <div style="padding:14px 16px 78px">
+      <article>
+        <div style="position:relative;border-radius:10px;overflow:hidden">
+          <div style="aspect-ratio:16/10;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px)"></div>
+          <span style="position:absolute;top:10px;left:10px;background:#D9232A;color:#fff;font-size:10px;font-weight:700;letter-spacing:.1em;padding:4px 7px;border-radius:4px">BREAKING</span>
+        </div>
+        <h1 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:26px;line-height:1.14;margin:12px 0 0;text-wrap:pretty">Ward 7 goes without water for a third day</h1>
+        <p style="font-size:14.5px;line-height:1.55;color:#444441;margin:9px 0 0">Four lanes behind the vegetable market are buying tanker water. The corporation and the contractor give different dates.</p>
+        <div style="font-size:11.5px;color:#8A8880;margin-top:9px">Sneha Kulkarni · 20 min ago</div>
+      </article>
+      <div style="border-top:2px solid #0A0A0A;margin-top:18px">
+        <sc-for list="{{ secondary }}" as="s" hint-placeholder-count="4">
+        <article style="display:grid;grid-template-columns:1fr 78px;gap:12px;padding:13px 0;border-bottom:1px solid #EFEDE6">
+          <div>
+            <span style="display:inline-block;background:rgba(217,35,42,.10);color:#9E151B;font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border-radius:999px">{{ s.cat }}</span>
+            <h3 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:16.5px;line-height:1.24;margin:7px 0 0;text-wrap:pretty">{{ s.title }}</h3>
+            <div style="font-size:11px;color:#8A8880;margin-top:6px">{{ s.time }}</div>
+          </div>
+          <div style="aspect-ratio:1/1;border-radius:7px;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px)"></div>
+        </article>
+        </sc-for>
+      </div>
+      <div style="background:#0C2044;border-radius:12px;margin-top:20px;padding:16px 0 16px 16px">
+        <div style="display:flex;align-items:baseline;gap:10px;padding-right:16px">
+          <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:19px;color:#fff;margin:0">Featured Videos</h2>
+          <div style="flex:1"></div>
+          <span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#378ADD">All →</span>
+        </div>
+        <div style="display:flex;gap:12px;overflow-x:auto;margin-top:13px;padding-bottom:4px">
+          <sc-for list="{{ videos }}" as="v" hint-placeholder-count="4">
+          <article style="flex:0 0 216px">
+            <div style="position:relative;border-radius:9px;overflow:hidden">
+              <div style="aspect-ratio:16/9;background-color:#12294F;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 6px,transparent 6px 12px)"></div>
+              <div style="position:absolute;inset:0;background:rgba(10,10,10,.34);display:flex;align-items:center;justify-content:center">
+                <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center">
+                  <span style="width:0;height:0;border-left:11px solid #0A0A0A;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px"></span>
+                </div>
+              </div>
+              <span style="position:absolute;right:7px;bottom:7px;background:rgba(255,255,255,.95);color:#0A0A0A;font-size:10px;font-weight:700;padding:2px 5px;border-radius:3px">{{ v.dur }}</span>
+            </div>
+            <h4 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:15px;line-height:1.25;color:#fff;margin:9px 0 0;text-wrap:pretty">{{ v.title }}</h4>
+          </article>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;border-bottom:2px solid #0A0A0A;padding-bottom:8px;margin-top:24px">
+        <span style="width:7px;height:16px;background:#D9232A"></span>
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:20px;margin:0">City &amp; Civic</h2>
+        <div style="flex:1"></div>
+        <span style="font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase">View all →</span>
+      </div>
+      <sc-for list="{{ politics }}" as="a" hint-placeholder-count="3">
+      <article style="border:1px solid #E4E1D8;border-radius:10px;overflow:hidden;margin-top:14px">
+        <div style="aspect-ratio:16/9;background-color:#E9E6DD;background-image:repeating-linear-gradient(135deg,rgba(10,10,10,.055) 0 6px,transparent 6px 12px)"></div>
+        <div style="padding:12px 13px 14px">
+          <span style="display:inline-block;background:rgba(217,35,42,.10);color:#9E151B;font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border-radius:999px">{{ a.cat }}</span>
+          <h3 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:17px;line-height:1.25;margin:8px 0 0;text-wrap:pretty">{{ a.title }}</h3>
+          <div style="font-size:11px;color:#8A8880;margin-top:8px">{{ a.time }}</div>
+        </div>
+      </article>
+      </sc-for>
+      <div style="border:1px solid #E4E1D8;border-radius:12px;overflow:hidden;margin-top:24px">
+        <div style="background:#0C2044;color:#fff;padding:11px 14px;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Most read today</div>
+        <ol style="margin:0;padding:0;list-style:none">
+          <sc-for list="{{ trending }}" as="t" hint-placeholder-count="5">
+          <li style="display:grid;grid-template-columns:28px 1fr;gap:6px;padding:12px 14px;border-bottom:1px solid #EFEDE6">
+            <span style="font-family:'DM Serif Display',Georgia,serif;font-size:18px;color:#D9232A;line-height:1.1">{{ t.n }}</span>
+            <span style="font-size:14px;line-height:1.35;font-weight:500;text-wrap:pretty">{{ t.title }}</span>
+          </li>
+          </sc-for>
+        </ol>
+      </div>
+      <div style="background:#0C2044;border-radius:12px;padding:20px;margin-top:22px">
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:21px;color:#fff;margin:0;text-wrap:pretty">Get city alerts on WhatsApp</h2>
+        <p style="font-size:13.5px;line-height:1.55;color:#B7B5AF;margin:8px 0 14px">Water cuts, road closures and the evening bulletin. Four messages a day, nothing else.</p>
+        <button style="width:100%;height:46px;background:#D9232A;color:#fff;border:0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer">Join the channel</button>
+      </div>
+    </div>
+    <div style="position:sticky;bottom:0;background:rgba(255,255,255,.97);border-top:1px solid #E4E1D8;display:grid;grid-template-columns:repeat(4,1fr);padding:9px 4px 12px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;min-height:44px;justify-content:center">
+        <div style="width:16px;height:16px;border:2px solid #0A0A0A;border-radius:3px"></div>
+        <span style="font-size:10.5px;font-weight:700;color:#0A0A0A">Home</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;min-height:44px;justify-content:center">
+        <span style="width:0;height:0;border-left:14px solid #D9232A;border-top:9px solid transparent;border-bottom:9px solid transparent"></span>
+        <span style="font-size:10.5px;color:#444441">Videos</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;min-height:44px;justify-content:center">
+        <div style="width:15px;height:15px;border:2px solid #444441;border-radius:50%"></div>
+        <span style="font-size:10.5px;color:#444441">Search</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;min-height:44px;justify-content:center">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <div style="width:16px;height:2px;background:#444441"></div>
+          <div style="width:16px;height:2px;background:#444441"></div>
+          <div style="width:16px;height:2px;background:#444441"></div>
+        </div>
+        <span style="font-size:10.5px;color:#444441">Sections</span>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showSplash&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;showTicker&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;showTrending&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+class Component extends DCLogic {
+  state = { screen: 'home', cat: 'City', clock: '', splash: 'in' };
+
+  componentDidMount() {
+    this.tick();
+    this._t = setInterval(() => this.tick(), 1000);
+    this._s1 = setTimeout(() => this.hideSplash(), 2400);
+  }
+  componentWillUnmount() { clearInterval(this._t); clearTimeout(this._s1); clearTimeout(this._s2); }
+
+  hideSplash() {
+    if (this.state.splash !== 'in') return;
+    this.setState({ splash: 'out' });
+    this._s2 = setTimeout(() => this.setState({ splash: 'gone' }), 480);
+  }
+
+  tick() {
+    const d = new Date();
+    const day = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    const t = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    this.setState({ clock: day + ' · ' + t + ' IST' });
+  }
+
+  go(screen, cat) {
+    return () => {
+      this.setState(cat ? { screen, cat } : { screen });
+      if (typeof window !== 'undefined') window.scrollTo(0, 0);
+    };
+  }
+
+  renderVals() {
+    const s = this.state.screen;
+    const cat = this.state.cat;
+    const blurbs = {
+      City: 'Wards, water, roads and power — what the municipal corporation did today.',
+      Crime: 'Station-wise reports, court hearings and follow-ups our reporters keep chasing.',
+      Politics: 'Corporators, the MLA\u2019s office and district-level party news.',
+      Business: 'Mandi rates, the MIDC belt, local traders and jobs.',
+      Sports: 'District leagues, school tournaments and the players coming up.',
+      Entertainment: 'Ganesh mandals, local theatre, shoots in town and weekend listings.'
+    };
+    const mk = (label, key) => ({
+      label, go: this.go(key === 'cat' ? 'category' : key, key === 'cat' ? 'City' : null),
+      bg: (s === key || (key === 'cat' && s === 'category')) ? '#D9232A' : 'transparent',
+      fg: (s === key || (key === 'cat' && s === 'category')) ? '#FFFFFF' : '#C9C7C1'
+    });
+
+    return {
+      clock: this.state.clock,
+      splashOn: this.props.showSplash !== false && this.state.splash !== 'gone',
+      splashOpacity: this.state.splash === 'out' ? 0 : 1,
+      hideSplash: () => this.hideSplash(),
+      navHomeColor: s === 'home' ? '#FFFFFF' : '#C9C7C1',
+      navHomeMark: s === 'home' ? '#D9232A' : 'transparent',
+      navVideoColor: (s === 'videos' || s === 'video') ? '#FFFFFF' : '#C9C7C1',
+      navVideoMark: (s === 'videos' || s === 'video') ? '#D9232A' : 'transparent',
+      cat, catBlurb: blurbs[cat] || blurbs.Politics,
+      isDesktop: s !== 'mobile',
+      isHome: s === 'home', isVideos: s === 'videos', isCategory: s === 'category',
+      isArticle: s === 'article', isVideo: s === 'video', isAbout: s === 'about',
+      isContact: s === 'contact', isMobile: s === 'mobile',
+      showTicker: this.props.showTicker !== false,
+      showTrending: this.props.showTrending !== false,
+
+      goHome: this.go('home'), goVideos: this.go('videos'), goArticle: this.go('article'),
+      goVideo: this.go('video'), goAbout: this.go('about'), goContact: this.go('contact'),
+      goCity: this.go('category', 'City'), goCrime: this.go('category', 'Crime'),
+      goPolitics: this.go('category', 'Politics'), goBusiness: this.go('category', 'Business'),
+      goSports: this.go('category', 'Sports'), goEntertainment: this.go('category', 'Entertainment'),
+
+      screens: [
+        mk('Home', 'home'), mk('Home · mobile', 'mobile'), mk('Videos', 'videos'),
+        mk('Category', 'cat'), mk('Article', 'article'), mk('Video', 'video'),
+        mk('About', 'about'), mk('Contact', 'contact')
+      ],
+
+      ticker: [
+        'Water supply to wards 4, 7 and 12 cut till Thursday for pipeline repair',
+        'Two-wheeler theft ring busted near the bus stand, three held',
+        'Municipal school results out; district pass rate up to 88%',
+        'Heavy rain alert for the taluka; schools shut on Wednesday',
+        'Weekly market shifts to the new ground from Sunday'
+      ],
+
+      secondary: [
+        { cat: 'Crime', title: 'Three held in two-wheeler theft ring operating near the bus stand', time: '12 min ago' },
+        { cat: 'City', title: 'Ward 7 goes without water for a third day as pump repair drags', time: '24 min ago' },
+        { cat: 'Sports', title: 'District under-19 final moved to the college ground after rain', time: '41 min ago' },
+        { cat: 'Business', title: 'Onion arrivals double at the mandi; rates fall to \u20b918 a kilo', time: '1 hour ago' }
+      ],
+
+      videos: [
+        { cat: 'Evening Bulletin', title: 'Today in the city: road work, water cuts and the mandi rates', dur: '12:40', time: 'Today, 19:30' },
+        { cat: 'Ground Report', title: 'Walking the flooded lane behind the vegetable market', dur: '07:22', time: 'Today, 14:30' },
+        { cat: 'Corporator Speaks', title: '\u2018The tender was cleared in March\u2019 \u2014 ward 7 corporator answers', dur: '16:05', time: 'Yesterday' },
+        { cat: 'Mandi Watch', title: 'Onion and tomato rates, and what traders expect this week', dur: '05:18', time: 'Today, 16:05' },
+        { cat: 'Special Report', title: 'The school that runs three shifts in two rooms', dur: '11:47', time: '2 days ago' },
+        { cat: 'City Explainer', title: 'How to file a complaint with the municipal corporation', dur: '04:36', time: '2 days ago' }
+      ],
+
+      allVideos: [
+        { cat: 'Evening Bulletin', title: 'Today in the city: road work, water cuts and the mandi rates', dur: '12:40', time: 'Today, 19:30' },
+        { cat: 'Ground Report', title: 'Walking the flooded lane behind the vegetable market', dur: '07:22', time: 'Today, 14:30' },
+        { cat: 'Mandi Watch', title: 'Onion and tomato rates, and what traders expect this week', dur: '05:18', time: 'Today, 16:05' },
+        { cat: 'City Explainer', title: 'How to file a complaint with the municipal corporation', dur: '04:36', time: 'Yesterday' },
+        { cat: 'Corporator Speaks', title: '\u2018The tender was cleared in March\u2019 \u2014 ward 7 corporator answers', dur: '16:05', time: 'Yesterday' },
+        { cat: 'Special Report', title: 'The school that runs three shifts in two rooms', dur: '11:47', time: '2 days ago' },
+        { cat: 'Ground Report', title: 'The road to the quarry village, six months after the promise', dur: '09:12', time: '3 days ago' },
+        { cat: 'Sports Desk', title: 'District under-19 final: the two boys everyone is watching', dur: '08:30', time: '3 days ago' }
+      ],
+      videoFilters: ['Bulletins', 'Ground reports', 'Interviews', 'Explainers', 'Live'],
+
+      upNext: [
+        { cat: 'Corporator Speaks', title: '\u2018The tender was cleared in March\u2019 \u2014 ward 7 corporator answers', dur: '16:05', time: 'Yesterday' },
+        { cat: 'Mandi Watch', title: 'Onion and tomato rates this week', dur: '05:18', time: 'Today' },
+        { cat: 'Ground Report', title: 'Walking the flooded lane behind the vegetable market', dur: '07:22', time: 'Today' },
+        { cat: 'City Explainer', title: 'How to file a complaint with the municipal corporation', dur: '04:36', time: 'Yesterday' },
+        { cat: 'Special Report', title: 'The school that runs three shifts in two rooms', dur: '11:47', time: '2 days ago' }
+      ],
+
+      politics: [
+        { cat: 'City', title: 'Standing committee clears \u20b92.4 crore for the ward 7 pipeline', time: '18 min ago' },
+        { cat: 'City', title: 'Street light contract goes back to tender after complaints', time: '52 min ago' },
+        { cat: 'City', title: 'Corporators walk out over the drainage work bill', time: '1 hour ago' }
+      ],
+      business: [
+        { cat: 'Business', title: 'Onion arrivals double at the mandi; rates fall to \u20b918 a kilo', time: '9 min ago' },
+        { cat: 'Business', title: 'MIDC unit adds a second shift, 60 jobs opening this month', time: '35 min ago' },
+        { cat: 'Business', title: 'Traders\u2019 association asks for parking near the main market', time: '1 hour ago' },
+        { cat: 'Business', title: 'Bank camp for crop loan renewals set for Saturday', time: '2 hours ago' }
+      ],
+      sports: [
+        { cat: 'Sports', title: 'District under-19 final moved to the college ground after rain', time: '22 min ago' },
+        { cat: 'Sports', title: 'City kabaddi league draws 14 teams, matches from Friday', time: '1 hour ago' },
+        { cat: 'Sports', title: 'Two local swimmers picked for the state camp', time: '3 hours ago' }
+      ],
+
+      trending: [
+        { n: '1', title: 'Ward-wise water cut schedule for this week' },
+        { n: '2', title: 'Three held in the bus stand theft ring' },
+        { n: '3', title: 'Municipal school results: full district list' },
+        { n: '4', title: 'Mandi rates today: onion, tomato and potato' },
+        { n: '5', title: 'Schools shut on Wednesday after rain alert' },
+        { n: '6', title: 'New weekly market ground: what changes for traders' },
+        { n: '7', title: 'Where to file a complaint about street lights' }
+      ],
+
+      catLead: {
+        title: 'Ward 7 goes without water for a third day as pump repair drags',
+        excerpt: 'Residents of four lanes have been buying tankers since Sunday. The corporation says the replacement motor arrives Wednesday; the contractor says Thursday.',
+        byline: 'Reported by Sneha Kulkarni · City desk · Updated 20 min ago'
+      },
+      catList: [
+        { cat: 'City', title: 'Standing committee clears \u20b92.4 crore for the ward 7 pipeline', time: '18 min ago' },
+        { cat: 'City', title: 'Street light contract goes back to tender after complaints', time: '52 min ago' },
+        { cat: 'City', title: 'Garbage vans skip three lanes for a week, residents write in', time: '1 hour ago' },
+        { cat: 'City', title: 'New traffic signal at the college chowk starts Monday', time: '2 hours ago' },
+        { cat: 'City', title: 'Corporation opens 14 new water connections in the east ward', time: '3 hours ago' },
+        { cat: 'City', title: 'Old bridge repair work to close one lane for ten days', time: '4 hours ago' },
+        { cat: 'City', title: 'Property tax collection crosses 60% ahead of the deadline', time: '5 hours ago' },
+        { cat: 'City', title: 'Stray dog sterilisation drive resumes after a two-month gap', time: 'Yesterday' },
+        { cat: 'City', title: 'Public toilets at the bus stand reopen after repairs', time: 'Yesterday' }
+      ],
+
+      shareRail: ['WA', 'FB', 'X', 'Link'],
+      tags: ['Ward 7', 'Water supply', 'Municipal corporation', 'Tenders', 'Monsoon'],
+
+      related: [
+        { cat: 'City', title: 'Standing committee clears \u20b92.4 crore for the ward 7 pipeline', time: '9 min ago' },
+        { cat: 'City', title: 'Ward-wise water cut schedule for this week', time: '52 min ago' },
+        { cat: 'City', title: 'Tanker rates go up as demand rises in the east ward', time: '2 hours ago' }
+      ],
+      relatedVideos: [
+        { title: 'Walking the flooded lane behind the vegetable market', dur: '07:22', time: 'Today, 14:30' },
+        { title: '\u2018The tender was cleared in March\u2019 \u2014 ward 7 corporator answers', dur: '16:05', time: 'Yesterday' },
+        { title: 'How to file a complaint with the municipal corporation', dur: '04:36', time: '2 days ago' }
+      ],
+
+      stats: [
+        { n: '2016', label: 'Started as a YouTube bulletin from one room' },
+        { n: '9', label: 'Reporters and stringers across the district' },
+        { n: '3', label: 'Video bulletins recorded every week' },
+        { n: '11', label: 'Wards and 40 villages we cover regularly' }
+      ],
+      team: [
+        { name: 'Sneha Kulkarni', role: 'City Reporter', bio: 'Covers the municipal corporation, water and roads. Files most of the ward stories.' },
+        { name: 'Rahul Pawar', role: 'Editor & Anchor', bio: 'Started the channel in 2016. Reads the evening bulletin and handles corrections.' },
+        { name: 'Imran Shaikh', role: 'Camera & Video', bio: 'Shoots and cuts the ground reports. Runs the YouTube channel.' },
+        { name: 'Vaishali More', role: 'Rural Correspondent', bio: 'Covers 40 villages in the taluka — farming, schools and health centres.' }
+      ],
+      standards: [
+        { n: '01', title: 'We name the reporter', body: 'Every story carries the name of the person who went there. If it came from a press note, we say so.' },
+        { n: '02', title: 'We call the other side', body: 'Officials, contractors and the accused get a chance to answer before we publish.' },
+        { n: '03', title: 'Corrections stay up', body: 'If we get something wrong, the correction sits on the same page with the date.' },
+        { n: '04', title: 'No paid news', body: 'Advertisements are labelled. Nobody buys a headline here.' }
+      ],
+
+      socials: ['WhatsApp', 'YouTube', 'Facebook', 'Instagram'],
+      footerSections: ['City', 'Crime', 'Politics', 'Business', 'Sports', 'Entertainment'],
+      footerShows: ['Evening Bulletin', 'Ground Report', 'Corporator Speaks', 'Mandi Watch', 'City Explainer']
+    };
+  }
+}
+</script>
+</body>
+</html>

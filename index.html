@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India News 18 — Breaking Edition | City & District Desk</title>
+  <meta name="description" content="Local city and district news portal since 2016. Covering eleven wards and forty villages with bulletins, ground reports, and verified updates.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Splash Screen (Auto-dismiss or Tap to skip) -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-stripe">
+      <div></div><div></div><div></div>
+    </div>
+    <div class="splash-grid-bg"></div>
+    <div class="splash-content">
+      <div class="splash-logo-card">
+        <img src="assets/logo.jpg" alt="India News 18 — Eighteen">
+      </div>
+      <div>
+        <div class="splash-title" data-i18n="brand_title">City &amp; District Desk</div>
+        <div class="splash-subtitle" data-i18n="splash_subtitle">Eleven wards · Forty villages · Since 2016</div>
+      </div>
+      <div class="splash-progress-track">
+        <div class="splash-progress-bar"></div>
+      </div>
+      <div class="splash-status">
+        <span class="dot"></span> <span data-i18n="splash_loading">Loading today's bulletin</span>
+      </div>
+      <div class="splash-skip-hint" data-i18n="splash_skip">Tap anywhere to skip</div>
+    </div>
+  </div>
+
+  <!-- Main Sticky Header -->
+  <header class="main-header">
+    <div class="container header-top">
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <a href="#/" class="brand-wrapper">
+        <div class="brand-logo-box">
+          <div class="logo-crop">
+            <img src="assets/logo.jpg" alt="India News 18 — Eighteen">
+          </div>
+        </div>
+        <div class="brand-meta">
+          <div class="brand-meta-title" data-i18n="brand_title">City &amp; District Desk</div>
+          <div class="brand-meta-sub" data-i18n="brand_sub">Local news since 2016</div>
+        </div>
+      </a>
+
+      <div class="header-spacer"></div>
+      <div class="header-clock" id="liveClock">Loading clock...</div>
+      <div class="header-divider"></div>
+
+      <button class="lang-toggle-btn" id="langToggleBtn" aria-label="Switch language" title="Switch language">
+        <span class="lang-toggle-option" data-lang="en">EN</span>
+        <span class="lang-toggle-option" data-lang="gu">ગુ</span>
+      </button>
+
+      <button class="header-search-btn" id="searchNewsBtn">
+        <div class="search-icon-circle"></div>
+        <div class="search-icon-line"></div>
+        <span style="font-size:13px;margin-left:4px" id="searchBtnLabel" data-i18n="search_btn">Search news</span>
+      </button>
+
+      <button class="mobile-search-btn" id="mobileSearchBtn" aria-label="Search">
+        <div class="search-icon-circle"></div>
+        <div class="search-icon-line"></div>
+      </button>
+    </div>
+
+    <!-- Navigation Bar & Mobile Drawer -->
+    <nav class="main-nav" id="mainNav">
+      <div class="container nav-container">
+        <a href="#/" class="nav-link active" data-i18n="nav_home">Home</a>
+        <a href="#/category/City" class="nav-link" data-i18n="nav_city">City</a>
+        <a href="#/category/Crime" class="nav-link" data-i18n="nav_crime">Crime</a>
+        <a href="#/category/Politics" class="nav-link" data-i18n="nav_politics">Politics</a>
+        <a href="#/category/Business" class="nav-link" data-i18n="nav_business">Business</a>
+        <a href="#/category/Sports" class="nav-link" data-i18n="nav_sports">Sports</a>
+        <a href="#/category/Entertainment" class="nav-link" data-i18n="nav_entertainment">Entertainment</a>
+        <a href="#/videos" class="nav-link videos-nav">
+          <span class="play-triangle"></span> <span data-i18n="nav_videos">Videos</span>
+        </a>
+        <a href="#/india-news" class="nav-link" data-i18n="nav_india_news">India News</a>
+        <div class="nav-spacer"></div>
+        <a href="#/about" class="nav-secondary-link" data-i18n="nav_about">About</a>
+        <a href="#/contact" class="nav-secondary-link" data-i18n="nav_contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Mobile Drawer Overlay Backdrop -->
+  <div class="mobile-drawer-backdrop" id="drawerBackdrop"></div>
+
+  <!-- Live Breaking Ticker Bar -->
+  <div class="breaking-ticker-bar">
+    <div class="ticker-badge">
+      <span class="pulse-dot"></span> Live
+    </div>
+    <div class="ticker-marquee-wrapper">
+      <div class="ticker-track" id="tickerTrack">
+        <!-- Injected dynamically from Store -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Public View Container -->
+  <main class="app-view" id="appView">
+    <!-- Rendered dynamically by App -->
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-main-grid">
+      <div>
+        <div style="background:#fff;border-radius:8px;padding:6px 10px;display:inline-flex">
+          <div class="logo-crop" style="position:relative;width:152px;height:76px;overflow:hidden">
+            <img src="assets/logo.jpg" alt="India News 18" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:164px;height:164px;mix-blend-mode:multiply">
+          </div>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#8B8983;margin-top:14px;max-width:34ch" data-i18n="footer_tagline">Local news since 2016. Eleven wards, forty villages, nine reporters and one camera unit.</p>
+        <div class="social-pills-row">
+          <a href="https://whatsapp.com" target="_blank" class="social-pill">WhatsApp</a>
+          <a href="https://youtube.com" target="_blank" class="social-pill">YouTube</a>
+          <a href="https://facebook.com" target="_blank" class="social-pill">Facebook</a>
+          <a href="https://instagram.com" target="_blank" class="social-pill">Instagram</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title" data-i18n="footer_sections">Sections</div>
+        <div class="footer-links-list">
+          <a href="#/category/City" class="footer-link" data-i18n="nav_city">City</a>
+          <a href="#/category/Crime" class="footer-link" data-i18n="nav_crime">Crime</a>
+          <a href="#/category/Politics" class="footer-link" data-i18n="nav_politics">Politics</a>
+          <a href="#/category/Business" class="footer-link" data-i18n="nav_business">Business</a>
+          <a href="#/category/Sports" class="footer-link" data-i18n="nav_sports">Sports</a>
+          <a href="#/category/Entertainment" class="footer-link" data-i18n="nav_entertainment">Entertainment</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title" data-i18n="footer_watch">Watch</div>
+        <div class="footer-links-list">
+          <a href="#/videos" class="footer-link" data-i18n="footer_watch_evening">Evening Bulletin</a>
+          <a href="#/videos" class="footer-link" data-i18n="footer_watch_ground">Ground Report</a>
+          <a href="#/videos" class="footer-link" data-i18n="footer_watch_corporator">Corporator Speaks</a>
+          <a href="#/videos" class="footer-link" data-i18n="footer_watch_mandi">Mandi Watch</a>
+          <a href="#/videos" class="footer-link" data-i18n="footer_watch_explainer">City Explainer</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title" data-i18n="footer_agency">The Agency</div>
+        <div class="footer-links-list">
+          <a href="#/about" class="footer-link" data-i18n="footer_about_us">About Us</a>
+          <a href="#/contact" class="footer-link" data-i18n="footer_contact_us">Contact Us</a>
+          <a href="#/about" class="footer-link" data-i18n="footer_editorial">Editorial Standards</a>
+          <a href="#/contact" class="footer-link" data-i18n="footer_corrections">Corrections &amp; Tips</a>
+          <a href="#/about" class="footer-link" data-i18n="footer_advertise">Advertise</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="container footer-bottom-flex">
+        <span data-i18n="footer_copyright">© 2026 India News 18 · Breaking Edition · Published from Market Road</span>
+        <a href="#/about" style="color:#6E6C66" data-i18n="footer_privacy">Privacy</a>
+        <a href="#/about" style="color:#6E6C66" data-i18n="footer_terms">Terms</a>
+        <a href="#/" style="color:#6E6C66" data-i18n="footer_rss">RSS</a>
+        <div class="nav-spacer"></div>
+        <span data-i18n="footer_times">All times IST</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Bottom Tab Bar -->
+  <div class="mobile-bottom-tabs">
+    <button class="tab-btn active" data-target="home" onclick="location.hash='#/'">
+      <span class="tab-icon">🏠</span>
+      <span data-i18n="tab_home">Home</span>
+    </button>
+    <button class="tab-btn" data-target="videos" onclick="location.hash='#/videos'">
+      <span class="tab-icon">▶</span>
+      <span data-i18n="tab_videos">Videos</span>
+    </button>
+    <button class="tab-btn" data-target="search" onclick="document.getElementById('searchNewsBtn').click()">
+      <span class="tab-icon">🔍</span>
+      <span data-i18n="tab_search">Search</span>
+    </button>
+    <button class="tab-btn" data-target="sections" id="mobileSectionsTabBtn">
+      <span class="tab-icon">☰</span>
+      <span data-i18n="tab_sections">Sections</span>
+    </button>
+  </div>
+
+  <!-- Search Modal Overlay -->
+  <div class="search-modal-overlay" id="searchModal">
+    <div class="search-modal-container">
+      <div class="search-input-header">
+        <span style="font-size:18px">🔍</span>
+        <input type="text" id="searchModalInput" placeholder="Search breaking stories, wards, or topics..." data-i18n-placeholder="search_placeholder">
+        <button class="search-close-btn" id="searchCloseBtn">✕</button>
+      </div>
+      <div class="search-results-list" id="searchResultsList">
+        <div style="padding:20px;color:#8B8983;text-align:center" data-i18n="search_hint">Type a keyword to search local stories and video bulletins...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notice -->
+  <div class="toast-notice" id="toastNotice">Notification</div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

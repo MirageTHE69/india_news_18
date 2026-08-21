@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India News 18 — Admin Portal &amp; News CMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Left Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <div style="background:#fff;border-radius:6px;padding:3px 6px">
+          <div style="position:relative;width:54px;height:28px;overflow:hidden">
+            <img src="assets/logo.jpg" alt="Logo" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:60px;height:60px;mix-blend-mode:multiply">
+          </div>
+        </div>
+        <div>
+          <div class="admin-brand-title">India News 18</div>
+          <div class="admin-brand-subtitle">Editorial CMS</div>
+        </div>
+      </div>
+
+      <nav class="admin-nav">
+        <a href="#dashboard" class="admin-nav-item active" data-tab="dashboard">
+          <span>📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#articles" class="admin-nav-item" data-tab="articles">
+          <span>📰</span>
+          <span>News Articles</span>
+        </a>
+        <a href="#videos" class="admin-nav-item" data-tab="videos">
+          <span>🎬</span>
+          <span>Videos &amp; Reels</span>
+        </a>
+        <a href="#tickers" class="admin-nav-item" data-tab="tickers">
+          <span>⚡</span>
+          <span>Breaking Tickers</span>
+        </a>
+        <a href="#tips" class="admin-nav-item" data-tab="tips">
+          <span>📩</span>
+          <span>Citizen Tips</span>
+        </a>
+        <a href="#settings" class="admin-nav-item" data-tab="settings">
+          <span>⚙️</span>
+          <span>Site Settings</span>
+        </a>
+      </nav>
+
+      <div class="admin-sidebar-footer">
+        <a href="index.html" class="admin-return-btn">
+          <span>↗</span>
+          <span>View Public Portal</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <h1 class="admin-page-title" id="adminPageTitle">Dashboard &amp; Overview</h1>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="font-size:13px;color:#718096">City Desk Editor · Online</div>
+          <a href="index.html" class="admin-btn admin-btn-secondary admin-btn-sm">Live Site</a>
+        </div>
+      </div>
+
+      <div class="admin-body" id="adminBody">
+        <!-- Rendered dynamically by AdminApp -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal: Create / Edit Article -->
+  <div class="admin-modal-overlay" id="articleModal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 id="articleModalTitle">Write News Story</h3>
+        <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="window.admin.closeModal('articleModal')">✕</button>
+      </div>
+      <div class="admin-modal-body">
+        <form id="articleForm" onsubmit="event.preventDefault(); window.admin.saveArticleForm();">
+          <div class="form-group">
+            <label class="form-label">Article Headline (Main Title) *</label>
+            <input type="text" class="form-input" id="articleTitle" placeholder="e.g. Ward 7 goes without water for a third day" required>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">News Category *</label>
+              <select class="form-select" id="articleCategory">
+                <option value="City">City &amp; Civic</option>
+                <option value="Crime">Crime</option>
+                <option value="Politics">Politics</option>
+                <option value="Business">Business &amp; Mandi</option>
+                <option value="Sports">Sports</option>
+                <option value="Entertainment">Entertainment</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Reporter Name &amp; Byline</label>
+              <input type="text" class="form-input" id="articleAuthor" placeholder="Sneha Kulkarni">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Reporter Role / Beat</label>
+              <input type="text" class="form-input" id="articleAuthorRole" placeholder="City Reporter · Filed from Ward 7">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Specific Location / Ward</label>
+              <input type="text" class="form-input" id="articleLocation" placeholder="Bhaji Market Lane, Ward 7">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Excerpt / Standfirst (Short Summary)</label>
+            <textarea class="form-textarea" rows="2" id="articleExcerpt" placeholder="Short description shown on homepage and cards..."></textarea>
+          </div>
+
+          <!-- Featured Image (Upload or URL) -->
+          <div style="background:#F7FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:16px;margin-bottom:16px">
+            <label class="form-label" style="font-weight:700">Featured News Photo (Local Upload or Web URL)</label>
+            <div class="form-grid-2">
+              <div>
+                <label class="form-label">Option A: Upload Local Image File</label>
+                <input type="file" class="form-input" id="articleImageFile" accept="image/*">
+              </div>
+              <div>
+                <label class="form-label">Option B: Paste Image URL</label>
+                <input type="url" class="form-input" id="articleImageUrl" placeholder="https://example.com/photo.jpg">
+              </div>
+            </div>
+            <div class="media-preview-box">
+              <img id="articlePreviewImg" src="" alt="Image preview" style="display:none">
+            </div>
+            <div class="form-group" style="margin-top:10px">
+              <label class="form-label">Photo Caption &amp; Credit</label>
+              <input type="text" class="form-input" id="articleImageCaption" placeholder="Residents queuing at tanker. Photo: Imran Shaikh">
+            </div>
+          </div>
+
+          <!-- Rich Writing Toolbar -->
+          <div class="form-group">
+            <label class="form-label" style="font-weight:700">Full News Story Body</label>
+            <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+              <button type="button" class="admin-btn admin-btn-secondary admin-btn-sm" onclick="window.admin.insertFormatting('p')">Paragraph &lt;p&gt;</button>
+              <button type="button" class="admin-btn admin-btn-secondary admin-btn-sm" onclick="window.admin.insertFormatting('h2')">Sub-heading &lt;h2&gt;</button>
+              <button type="button" class="admin-btn admin-btn-secondary admin-btn-sm" onclick="window.admin.insertFormatting('quote')">Pull-Quote &lt;blockquote&gt;</button>
+              <button type="button" class="admin-btn admin-btn-secondary admin-btn-sm" onclick="window.admin.insertFormatting('callout')">Also Read Box</button>
+            </div>
+            <textarea class="form-textarea" rows="8" id="articleContent" placeholder="Write full article here. HTML tags supported for paragraphs, quotes, and headings..."></textarea>
+          </div>
+
+          <!-- Flags -->
+          <div style="display:flex;gap:24px;padding:12px 0">
+            <label class="form-checkbox-label">
+              <input type="checkbox" id="articleIsLead">
+              <span>Set as Main <strong>Lead Story (Hero)</strong></span>
+            </label>
+            <label class="form-checkbox-label">
+              <input type="checkbox" id="articleIsBreaking">
+              <span>Mark as <strong>Breaking News</strong></span>
+            </label>
+            <label class="form-checkbox-label">
+              <input type="checkbox" id="articleIsTrending">
+              <span>Add to <strong>Trending Rail</strong></span>
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="admin-modal-footer">
+        <button type="button" class="admin-btn admin-btn-secondary" onclick="window.admin.closeModal('articleModal')">Cancel</button>
+        <button type="button" class="admin-btn admin-btn-accent" onclick="window.admin.saveArticleForm()">Publish News Story</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Create / Edit Video -->
+  <div class="admin-modal-overlay" id="videoModal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 id="videoModalTitle">Add Video / Reel Bulletin</h3>
+        <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="window.admin.closeModal('videoModal')">✕</button>
+      </div>
+      <div class="admin-modal-body">
+        <form id="videoForm" onsubmit="event.preventDefault(); window.admin.saveVideoForm();">
+          <div class="form-group">
+            <label class="form-label">Video Title / Show Episode Headline *</label>
+            <input type="text" class="form-input" id="videoTitle" placeholder="e.g. Today in the city: road work, water cuts and mandi rates" required>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Show / Category</label>
+              <select class="form-select" id="videoCategory">
+                <option value="Evening Bulletin">Evening Bulletin</option>
+                <option value="Ground Report">Ground Report</option>
+                <option value="Corporator Speaks">Corporator Speaks</option>
+                <option value="Mandi Watch">Mandi Watch</option>
+                <option value="Special Report">Special Report</option>
+                <option value="City Explainer">City Explainer</option>
+                <option value="Sports Desk">Sports Desk</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Video Source Type *</label>
+              <select class="form-select" id="videoSourceType">
+                <option value="youtube">YouTube Video / Embed URL</option>
+                <option value="instagram">Instagram Reel Link</option>
+                <option value="direct">Direct Local MP4 Video File / URL</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Video URL and Local Picker -->
+          <div class="form-group" id="videoUrlGroup">
+            <label class="form-label">YouTube Video Link or Embed URL</label>
+            <input type="url" class="form-input" id="videoUrlInput" placeholder="https://www.youtube.com/watch?v=... or https://instagram.com/reel/...">
+          </div>
+
+          <div class="form-group" id="videoLocalFileGroup" style="display:none">
+            <label class="form-label">Upload Local Video File (.mp4, .webm)</label>
+            <input type="file" class="form-input" id="videoLocalFileInput" accept="video/*">
+            <div class="media-preview-box" style="margin-top:10px">
+              <video id="videoPreviewTag" controls style="display:none;max-height:160px"></video>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Duration (e.g. 12:40)</label>
+              <input type="text" class="form-input" id="videoDuration" value="12:40">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Filter Tag</label>
+              <select class="form-select" id="videoFilterType">
+                <option value="Bulletins">Bulletins</option>
+                <option value="Ground reports">Ground reports</option>
+                <option value="Interviews">Interviews</option>
+                <option value="Explainers">Explainers</option>
+                <option value="Live">Live</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description / Summary</label>
+            <textarea class="form-textarea" rows="3" id="videoDescription" placeholder="Key topics covered in this bulletin or reel..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-checkbox-label">
+              <input type="checkbox" id="videoIsFeatured">
+              <span>Set as <strong>Featured Main Video on Video Hub &amp; Live Stream Box</strong></span>
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="admin-modal-footer">
+        <button type="button" class="admin-btn admin-btn-secondary" onclick="window.admin.closeModal('videoModal')">Cancel</button>
+        <button type="button" class="admin-btn admin-btn-accent" onclick="window.admin.saveVideoForm()">Save Video Bulletin</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
