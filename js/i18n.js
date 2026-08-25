@@ -158,7 +158,10 @@ const DICT = {
     home_live_widget_headline: 'General body meeting: ward 7 water item on the floor',
     tip_prompt_name: 'Your Name (or leave blank for Anonymous):',
     tip_prompt_contact: 'WhatsApp / Phone number (Confidential):',
-    tip_prompt_message: 'Describe the news tip or report:'
+    tip_prompt_message: 'Describe the news tip or report:',
+
+    home_empty_title: 'No stories published yet',
+    home_empty_desc: "We're setting up the newsroom. Check back soon for local reporting, or see live national headlines under India News."
   },
   gu: {
     nav_home: 'હોમ', nav_city: 'શહેર', nav_crime: 'ક્રાઇમ', nav_politics: 'રાજકારણ',
@@ -310,7 +313,10 @@ const DICT = {
     home_live_widget_headline: 'જનરલ બોડી મીટિંગ: વોર્ડ 7 પાણીનો મુદ્દો ફ્લોર પર',
     tip_prompt_name: 'તમારું નામ (અથવા અનામી માટે ખાલી છોડો):',
     tip_prompt_contact: 'WhatsApp / ફોન નંબર (ગોપનીય):',
-    tip_prompt_message: 'સમાચાર ટીપ અથવા અહેવાલનું વર્ણન કરો:'
+    tip_prompt_message: 'સમાચાર ટીપ અથવા અહેવાલનું વર્ણન કરો:',
+
+    home_empty_title: 'હજુ સુધી કોઈ સ્ટોરી પ્રકાશિત થઈ નથી',
+    home_empty_desc: 'અમે ન્યૂઝરૂમ સેટ કરી રહ્યા છીએ. સ્થાનિક અહેવાલ માટે ટૂંક સમયમાં ફરી તપાસો, અથવા ભારત સમાચાર હેઠળ લાઈવ રાષ્ટ્રીય હેડલાઈન જુઓ.'
   }
 };
 

@@ -125,7 +125,7 @@ class AdminApp {
             </tr>
           </thead>
           <tbody>
-            ${articles.slice(0, 5).map(a => `
+            ${articles.length ? articles.slice(0, 5).map(a => `
               <tr>
                 <td style="font-weight:600;max-width:320px">${a.title}</td>
                 <td><span class="admin-badge badge-draft">${a.category}</span></td>
@@ -139,7 +139,7 @@ class AdminApp {
                   <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="window.admin.editArticle('${a.id}')">Edit</button>
                 </td>
               </tr>
-            `).join('')}
+            `).join('') : '<tr><td colspan="6" style="text-align:center;padding:24px;color:#718096">No articles yet — click "+ Write New News Story" to publish your first one.</td></tr>'}
           </tbody>
         </table>
       </div>
@@ -173,7 +173,7 @@ class AdminApp {
             </tr>
           </thead>
           <tbody>
-            ${articles.map(a => `
+            ${articles.length ? articles.map(a => `
               <tr data-article-id="${a.id}">
                 <td style="width:60px">
                   <div style="width:48px;height:36px;border-radius:4px;overflow:hidden;background:#E2E8F0">
@@ -193,7 +193,7 @@ class AdminApp {
                   <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="window.admin.deleteArticle('${a.id}')">Delete</button>
                 </td>
               </tr>
-            `).join('')}
+            `).join('') : '<tr><td colspan="6" style="text-align:center;padding:24px;color:#718096">No articles yet. Click "+ Create Article" to publish your first story.</td></tr>'}
           </tbody>
         </table>
       </div>

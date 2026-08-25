@@ -269,6 +269,7 @@ class App {
     const trendingArticles = articles.filter(a => a.isTrending).slice(0, 7);
 
     container.innerHTML = `
+      ${articles.length ? `
       <!-- Hero Top Section -->
       <section class="container home-hero-section">
         <article class="hero-lead-article" onclick="location.hash='#/article/${leadArticle.id}'">
@@ -281,7 +282,7 @@ class App {
               <span class="badge-category-dark">${this.catLabel(leadArticle.category) || this.catLabel('City')}</span>
             </div>
           </div>
-          <h1 class="hero-lead-title">${L(leadArticle.title) || 'Ward 7 goes without water for a third day'}</h1>
+          <h1 class="hero-lead-title">${L(leadArticle.title)}</h1>
           <p class="hero-lead-excerpt">${L(leadArticle.excerpt) || ''}</p>
           <div class="byline-meta">
             <span class="author-name">${I18n.t('byline_reported_by')} ${leadArticle.author || 'Newsroom'}</span>
@@ -310,6 +311,7 @@ class App {
           `).join('')}
         </div>
       </section>
+      ` : this.renderHomeEmptyState()}
 
       <!-- Featured Videos Strip -->
       <section class="featured-videos-section">
@@ -342,6 +344,7 @@ class App {
         </div>
       </section>
 
+      ${articles.length ? `
       <!-- Beat Stories & Sidebar -->
       <section class="container home-content-split">
         <div style="display:flex;flex-direction:column;gap:38px;">
@@ -428,6 +431,7 @@ class App {
           </div>
         </aside>
       </section>
+      ` : ''}
 
       <!-- Community / Newsletter CTA -->
       <section class="container cta-banner-section">
@@ -1006,6 +1010,17 @@ class App {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+    `;
+  }
+
+  renderHomeEmptyState() {
+    return `
+      <section class="container" style="padding:56px 24px">
+        <div style="max-width:520px;margin:0 auto;text-align:center;border:1px dashed var(--border-subtle);border-radius:12px;padding:40px 28px">
+          <h2 style="font-family:var(--font-serif);font-size:26px;margin-bottom:10px">${I18n.t('home_empty_title')}</h2>
+          <p style="font-size:14.5px;line-height:1.6;color:var(--text-secondary)">${I18n.t('home_empty_desc')}</p>
         </div>
       </section>
     `;
