@@ -41,6 +41,49 @@ function writeCache(category, articles) {
   }
 }
 
+function normalize(results) {
+  return results.map(item => ({
+    title: item.title || '',
+    description: item.description || '',
+    link: item.link || '#',
+    image: item.image_url || '',
+    source: item.source_id || item.source_name || 'Wire',
+    pubDate: item.pubDate || null
+  })).filter(a => a.title);
+}
+
+/**
+ * Fetch Indian share-market headlines (Sensex, Nifty, Dalal Street).
+ * Same shape and failure behaviour as fetchIndiaNews.
+ */
+export async function fetchMarketNews() {
+  const cacheKey = 'markets';
+  const cached = readCache(cacheKey);
+  if (cached) return cached;
+
+  const q = 'sensex OR nifty OR "stock market" OR "dalal street"';
+  const url = `${BASE_URL}?apikey=${API_KEY}&country=in&language=en&qInTitle=${encodeURIComponent(q)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`NewsData.io HTTP ${res.status}`);
+  const data = await res.json();
+
+  if (data.status !== 'success' || !Array.isArray(data.results)) {
+    throw new Error((data && data.results && data.results.message) || 'NewsData.io returned an error');
+  }
+
+  // The wire often carries the same agency story from several outlets
+  const seen = new Set();
+  const articles = normalize(data.results).filter(a => {
+    const key = a.title.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  writeCache(cacheKey, articles);
+  return articles;
+}
+
 /**
  * Fetch India headlines for a category. Returns a normalized array of
  * { title, description, link, image, source, pubDate }.
@@ -59,14 +102,7 @@ export async function fetchIndiaNews(category = 'top') {
     throw new Error((data && data.results && data.results.message) || 'NewsData.io returned an error');
   }
 
-  const articles = data.results.map(item => ({
-    title: item.title || '',
-    description: item.description || '',
-    link: item.link || '#',
-    image: item.image_url || '',
-    source: item.source_id || item.source_name || 'Wire',
-    pubDate: item.pubDate || null
-  })).filter(a => a.title);
+  const articles = normalize(data.results);
 
   writeCache(category, articles);
   return articles;

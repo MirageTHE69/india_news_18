@@ -4,7 +4,8 @@
 import { NewsStore } from './store.js';
 import { I18n } from './i18n.js';
 import { L, LH, TRANSLATIONS_UPDATED_EVENT } from './translate.js';
-import { fetchIndiaNews, INDIA_NEWS_CATEGORIES } from './newsApi.js';
+import { fetchIndiaNews, fetchMarketNews, INDIA_NEWS_CATEGORIES } from './newsApi.js';
+import { MARKET_CHART_SYMBOLS, mountMarketWidget, isMarketSessionOpen } from './markets.js';
 
 class App {
   constructor() {
@@ -15,6 +16,7 @@ class App {
     this.videoFilter = 'All';
     this.categoryFilter = 'Latest';
     this.indiaNewsCategory = 'top';
+    this.marketChartSymbol = MARKET_CHART_SYMBOLS[0].symbol;
     this._rerenderTimer = null;
 
     this.init();
@@ -28,6 +30,7 @@ class App {
     this.initSearch();
     this.initMobileDrawer();
     this.initLangToggle();
+    this.initInstagramResize();
     this.applyStaticI18n();
 
     // Listen to store updates
@@ -75,6 +78,21 @@ class App {
     if (!btn) return;
     btn.dataset.active = I18n.getLang();
     btn.addEventListener('click', () => I18n.toggleLang());
+  }
+
+  // Stories can carry the newsroom's own Gujarati copy in `<field>Gu`;
+  // anything without it falls back to the auto-translation layer.
+  loc(obj, field) {
+    if (!obj) return '';
+    const gu = obj[field + 'Gu'];
+    if (gu && I18n.getLang() === 'gu') return gu;
+    return L(obj[field]);
+  }
+
+  locHtml(obj, field) {
+    const gu = obj[field + 'Gu'];
+    if (gu && I18n.getLang() === 'gu') return gu;
+    return LH(obj[field]);
   }
 
   catLabel(cat) {
@@ -161,6 +179,8 @@ class App {
       this.currentVideoId = parts[1];
     } else if (parts[0] === 'india-news') {
       this.currentRoute = 'india-news';
+    } else if (parts[0] === 'markets') {
+      this.currentRoute = 'markets';
     } else if (parts[0] === 'about') {
       this.currentRoute = 'about';
     } else if (parts[0] === 'contact') {
@@ -183,7 +203,8 @@ class App {
         (this.currentRoute === 'category' && href === `#/category/${this.currentCategory}`) ||
         (this.currentRoute === 'videos' && href === '#/videos') ||
         (this.currentRoute === 'video' && href === '#/videos') ||
-        (this.currentRoute === 'india-news' && href === '#/india-news')
+        (this.currentRoute === 'india-news' && href === '#/india-news') ||
+        (this.currentRoute === 'markets' && href === '#/markets')
       ) {
         link.classList.add('active');
       }
@@ -224,6 +245,9 @@ class App {
         break;
       case 'india-news':
         this.renderIndiaNews(container);
+        break;
+      case 'markets':
+        this.renderMarkets(container);
         break;
       case 'about':
         this.renderAbout(container);
@@ -267,6 +291,7 @@ class App {
     const businessArticles = articles.filter(a => a.category === 'Business').slice(0, 4);
     const sportsArticles = articles.filter(a => a.category === 'Sports').slice(0, 3);
     const trendingArticles = articles.filter(a => a.isTrending).slice(0, 7);
+    const latestArticles = articles.filter(a => a.id !== leadArticle.id && a.category !== 'City').slice(0, 6);
 
     container.innerHTML = `
       ${articles.length ? `
@@ -282,8 +307,8 @@ class App {
               <span class="badge-category-dark">${this.catLabel(leadArticle.category) || this.catLabel('City')}</span>
             </div>
           </div>
-          <h1 class="hero-lead-title">${L(leadArticle.title)}</h1>
-          <p class="hero-lead-excerpt">${L(leadArticle.excerpt) || ''}</p>
+          <h1 class="hero-lead-title">${this.loc(leadArticle, 'title')}</h1>
+          <p class="hero-lead-excerpt">${this.loc(leadArticle, 'excerpt') || ''}</p>
           <div class="byline-meta">
             <span class="author-name">${I18n.t('byline_reported_by')} ${leadArticle.author || 'Newsroom'}</span>
             <span>·</span>
@@ -299,7 +324,7 @@ class App {
             <article class="secondary-story-card" onclick="location.hash='#/article/${art.id}'">
               <div>
                 <span class="badge-pill-red">${this.catLabel(art.category)}</span>
-                <h3 class="secondary-story-title">${L(art.title)}</h3>
+                <h3 class="secondary-story-title">${this.loc(art, 'title')}</h3>
                 <div class="secondary-story-time">${this.formatTimeAgo(art.publishedAt)}</div>
               </div>
               <div class="secondary-story-thumb">
@@ -336,7 +361,7 @@ class App {
                   <span class="video-duration-pill">${v.duration || '00:00'}</span>
                 </div>
                 <div class="video-card-cat">${L(v.category)}</div>
-                <h3 class="video-card-title">${L(v.title)}</h3>
+                <h3 class="video-card-title">${this.loc(v, 'title')}</h3>
                 <div class="video-card-time">${v.time ? L(v.time) : this.formatTimeAgo(v.createdAt)}</div>
               </article>
             `).join('')}
@@ -349,6 +374,7 @@ class App {
       <section class="container home-content-split">
         <div style="display:flex;flex-direction:column;gap:38px;">
           <!-- City & Civic -->
+          ${cityArticles.length ? `
           <div>
             <div class="section-title-bar">
               <span class="red-bar-indicator"></span>
@@ -360,8 +386,10 @@ class App {
               ${cityArticles.map(a => this.renderStandardNewsCard(a)).join('')}
             </div>
           </div>
+          ` : ''}
 
           <!-- Business (Beige Box) -->
+          ${businessArticles.length ? `
           <div class="business-beige-box">
             <div class="section-title-bar">
               <span class="red-bar-indicator"></span>
@@ -377,15 +405,30 @@ class App {
                   </div>
                   <div>
                     <span class="badge-pill-red">${this.catLabel(a.category)}</span>
-                    <h3 style="font-family:var(--font-serif);font-size:17px;line-height:1.26;margin-top:8px">${L(a.title)}</h3>
+                    <h3 style="font-family:var(--font-serif);font-size:17px;line-height:1.26;margin-top:8px">${this.loc(a, 'title')}</h3>
                     <div style="font-size:11.5px;color:var(--text-subtle);margin-top:8px">${this.formatTimeAgo(a.publishedAt)}</div>
                   </div>
                 </article>
               `).join('')}
             </div>
           </div>
+          ` : ''}
+
+          <!-- Latest (everything not already in the hero) -->
+          ${latestArticles.length ? `
+          <div>
+            <div class="section-title-bar">
+              <span class="red-bar-indicator"></span>
+              <h2>${I18n.t('home_latest')}</h2>
+            </div>
+            <div class="grid-3-col">
+              ${latestArticles.map(a => this.renderStandardNewsCard(a)).join('')}
+            </div>
+          </div>
+          ` : ''}
 
           <!-- Sports -->
+          ${sportsArticles.length ? `
           <div>
             <div class="section-title-bar">
               <span class="red-bar-indicator"></span>
@@ -397,6 +440,7 @@ class App {
               ${sportsArticles.map(a => this.renderStandardNewsCard(a)).join('')}
             </div>
           </div>
+          ` : ''}
         </div>
 
         <!-- Right Sidebar -->
@@ -410,7 +454,7 @@ class App {
               ${trendingArticles.map((t, idx) => `
                 <li class="trending-list-item" onclick="location.hash='#/article/${t.id}'">
                   <span class="trending-num">${idx + 1}</span>
-                  <span class="trending-title">${L(t.title)}</span>
+                  <span class="trending-title">${this.loc(t, 'title')}</span>
                 </li>
               `).join('')}
             </ol>
@@ -498,8 +542,8 @@ class App {
               </div>
               <div style="align-self:center">
                 <span class="badge-pill-red">${this.catLabel(lead.category)}</span>
-                <h2 class="category-lead-title">${L(lead.title)}</h2>
-                <p style="font-size:15.5px;line-height:1.55;color:var(--text-secondary);margin-top:11px">${L(lead.excerpt)}</p>
+                <h2 class="category-lead-title">${this.loc(lead, 'title')}</h2>
+                <p style="font-size:15.5px;line-height:1.55;color:var(--text-secondary);margin-top:11px">${this.loc(lead, 'excerpt')}</p>
                 <div class="byline-meta" style="margin-top:12px">
                   <span>${I18n.t('byline_reported_by')} ${lead.author}</span>
                   <span>·</span>
@@ -527,7 +571,7 @@ class App {
               ${articles.slice(0, 5).map((t, idx) => `
                 <li class="trending-list-item" onclick="location.hash='#/article/${t.id}'">
                   <span class="trending-num">${idx + 1}</span>
-                  <span class="trending-title">${L(t.title)}</span>
+                  <span class="trending-title">${this.loc(t, 'title')}</span>
                 </li>
               `).join('')}
             </ol>
@@ -548,7 +592,8 @@ class App {
     }
 
     const related = NewsStore.getArticles().filter(a => a.id !== article.id && a.category === article.category).slice(0, 3);
-    const relatedVideos = NewsStore.getVideos().slice(0, 3);
+    const linkedVideo = article.videoId ? NewsStore.getVideo(article.videoId) : null;
+    const relatedVideos = [linkedVideo, ...NewsStore.getVideos().filter(v => v.id !== article.videoId)].filter(Boolean).slice(0, 3);
 
     container.innerHTML = `
       <div class="container-narrow" style="padding-top:26px">
@@ -572,8 +617,8 @@ class App {
               <span class="badge-pill-red">${this.catLabel(article.category)}</span>
             </div>
 
-            <h1 class="article-headline-main">${L(article.title)}</h1>
-            <p class="article-standfirst">${L(article.excerpt) || ''}</p>
+            <h1 class="article-headline-main">${this.loc(article, 'title')}</h1>
+            <p class="article-standfirst">${this.loc(article, 'excerpt') || ''}</p>
 
             <div class="article-author-strip">
               <div class="author-avatar-circle">${article.author ? article.author.charAt(0) : 'R'}</div>
@@ -599,7 +644,7 @@ class App {
             </figure>
 
             <div class="article-body-prose">
-              ${article.content ? LH(article.content) : `<p>${I18n.t('article_default_body')}</p>`}
+              ${article.content ? this.locHtml(article, 'content') : `<p>${I18n.t('article_default_body')}</p>`}
             </div>
 
             <div class="tags-row">
@@ -634,7 +679,7 @@ class App {
                   <div class="video-play-overlay"><div class="play-circle-btn"><span class="triangle"></span></div></div>
                   <span class="video-duration-pill">${v.duration || '00:00'}</span>
                 </div>
-                <h4 style="font-family:var(--font-serif);font-size:17.5px;line-height:1.26;margin-top:11px">${L(v.title)}</h4>
+                <h4 style="font-family:var(--font-serif);font-size:17.5px;line-height:1.26;margin-top:11px">${this.loc(v, 'title')}</h4>
                 <div style="font-size:11.5px;color:var(--text-subtle);margin-top:6px">${v.time ? L(v.time) : this.formatTimeAgo(v.createdAt)}</div>
               </article>
             `).join('')}
@@ -691,8 +736,8 @@ class App {
               </div>
               <div style="align-self:center">
                 <div style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--link-blue)">${L(featuredVideo.category)}</div>
-                <h2 style="font-family:var(--font-serif);font-size:29px;line-height:1.16;margin-top:10px">${L(featuredVideo.title)}</h2>
-                <p style="font-size:14.5px;line-height:1.55;color:#B7B5AF;margin-top:12px">${L(featuredVideo.description)}</p>
+                <h2 style="font-family:var(--font-serif);font-size:29px;line-height:1.16;margin-top:10px">${this.loc(featuredVideo, 'title')}</h2>
+                <p style="font-size:14.5px;line-height:1.55;color:#B7B5AF;margin-top:12px">${this.loc(featuredVideo, 'description')}</p>
                 <div style="font-size:12px;color:#8B8983;margin-top:14px">${featuredVideo.time ? L(featuredVideo.time) : `1,240 ${I18n.t('video_watching_now')}`}</div>
               </div>
             </div>
@@ -709,7 +754,7 @@ class App {
                   <span class="video-duration-pill">${v.duration || '00:00'}</span>
                 </div>
                 <div class="video-card-cat">${L(v.category)}</div>
-                <h4 style="font-family:var(--font-serif);font-size:17.5px;line-height:1.26;margin-top:6px">${L(v.title)}</h4>
+                <h4 style="font-family:var(--font-serif);font-size:17.5px;line-height:1.26;margin-top:6px">${this.loc(v, 'title')}</h4>
                 <div class="video-card-time">${v.time ? L(v.time) : this.formatTimeAgo(v.createdAt)}</div>
               </article>
             `).join('')}
@@ -727,15 +772,17 @@ class App {
     const upNext = NewsStore.getVideos().filter(v => v.id !== video.id).slice(0, 5);
 
     let mediaEmbedHtml = '';
+    let wrapperClass = 'player-embed-wrapper';
     if (video.videoSource === 'youtube' && video.videoUrl) {
       const embedUrl = video.videoUrl.includes('embed') ? video.videoUrl : `https://www.youtube.com/embed/${this.extractYouTubeId(video.videoUrl)}`;
       mediaEmbedHtml = `<iframe src="${embedUrl}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     } else if (video.videoSource === 'instagram' && video.videoUrl) {
+      const igEmbedUrl = this.instagramEmbedUrl(video.videoUrl);
+      const igLink = this.safeUrl(video.videoUrl);
+      wrapperClass += ' instagram-embed';
       mediaEmbedHtml = `
-        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#000;color:#fff;flex-direction:column;gap:12px">
-          <div style="font-size:18px;font-weight:700">Instagram Reel</div>
-          <a href="${video.videoUrl}" target="_blank" class="btn-red" style="padding:8px 16px">Open Reel in Instagram ↗</a>
-        </div>
+        ${igEmbedUrl ? `<iframe src="${igEmbedUrl}" title="${this.escapeHtml(video.title)}" loading="lazy" scrolling="no" allowtransparency="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe>` : ''}
+        <a href="${igLink}" target="_blank" rel="noopener noreferrer" class="instagram-open-link">${I18n.t('video_open_instagram')}</a>
       `;
     } else if (video.videoSource === 'direct' && video.videoUrl) {
       mediaEmbedHtml = `<video controls autoplay src="${video.videoUrl}"></video>`;
@@ -757,7 +804,7 @@ class App {
       <section style="background:var(--navy-primary);padding:26px 0 34px;color:#fff">
         <div class="container video-theater-container">
           <div>
-            <div class="player-embed-wrapper">
+            <div class="${wrapperClass}">
               ${mediaEmbedHtml}
             </div>
 
@@ -766,19 +813,20 @@ class App {
               <span style="border:1px solid var(--navy-border);color:#B7B5AF;font-size:10.5px;font-weight:700;text-transform:uppercase;padding:4px 9px;border-radius:999px">${video.filterType ? L(video.filterType) : I18n.t('video_default_filter')}</span>
             </div>
 
-            <h1 style="font-family:var(--font-serif);font-size:38px;line-height:1.12;margin-top:14px">${L(video.title)}</h1>
+            <h1 style="font-family:var(--font-serif);font-size:38px;line-height:1.12;margin-top:14px">${this.loc(video, 'title')}</h1>
 
             <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px;padding:16px 0;border-top:1px solid var(--navy-border);border-bottom:1px solid var(--navy-border)">
               <div class="author-avatar-circle" style="background:var(--navy-surface);color:#fff">R</div>
               <div>
                 <div style="font-size:13.5px;font-weight:700">Anchor Desk</div>
-                <div style="font-size:12px;color:#8B8983">${video.time ? L(video.time) : I18n.t('video_today')} · ${video.views || '9,420'} ${I18n.t('video_views')}</div>
+                <div style="font-size:12px;color:#8B8983">${video.time ? L(video.time) : this.formatTimeAgo(video.createdAt)}${video.views ? ` · ${video.views} ${I18n.t('video_views')}` : ''}</div>
               </div>
               <div class="nav-spacer"></div>
               <button class="btn-white" onclick="window.app.shareArticle('whatsapp', '${(video.title || '').replace(/'/g, '')}')">${I18n.t('video_send_whatsapp')}</button>
             </div>
 
-            <p style="font-size:16px;line-height:1.65;color:#C9C7C1;margin-top:20px">${L(video.description)}</p>
+            <p style="font-size:16px;line-height:1.65;color:#C9C7C1;margin-top:20px">${this.loc(video, 'description')}</p>
+            ${video.articleId && NewsStore.getArticle(video.articleId) ? `<a href="#/article/${video.articleId}" class="btn-white" style="display:inline-flex;align-items:center;margin-top:16px;text-decoration:none">${I18n.t('video_read_story')}</a>` : ''}
           </div>
 
           <aside>
@@ -791,7 +839,7 @@ class App {
                     <span class="video-duration-pill" style="font-size:10px;padding:2px 5px">${v.duration || '00:00'}</span>
                   </div>
                   <div>
-                    <h4 style="font-family:var(--font-serif);font-size:15.5px;line-height:1.26;color:#fff">${L(v.title)}</h4>
+                    <h4 style="font-family:var(--font-serif);font-size:15.5px;line-height:1.26;color:#fff">${this.loc(v, 'title')}</h4>
                     <div style="font-size:11px;color:#8B8983;margin-top:6px">${L(v.category)} · ${v.time ? L(v.time) : I18n.t('video_recent')}</div>
                   </div>
                 </article>
@@ -868,7 +916,7 @@ class App {
 
   renderWireNewsCard(a) {
     const href = this.safeUrl(a.link);
-    const title = this.escapeHtml(L(a.title));
+    const title = this.escapeHtml(this.loc(a, 'title'));
     const source = this.escapeHtml(a.source);
     const img = a.image ? this.safeUrl(a.image) : '';
     return `
@@ -888,6 +936,140 @@ class App {
   setIndiaNewsCategory(key) {
     this.indiaNewsCategory = key;
     this.renderCurrentView();
+  }
+
+  // ==========================================
+  // VIEW: SHARE MARKET
+  // ==========================================
+  renderMarkets(container) {
+    // Store, language and translation events all re-render the current view.
+    // The price widgets are live iframes, so only rebuild them when the
+    // language actually changed; otherwise just refresh the headlines.
+    const existing = document.getElementById('marketsRoot');
+    if (existing && existing.dataset.lang === I18n.getLang()) {
+      this.loadMarketNews();
+      return;
+    }
+
+    const open = isMarketSessionOpen();
+
+    container.innerHTML = `
+      <div id="marketsRoot" data-lang="${I18n.getLang()}">
+        <section class="category-header-banner">
+          <div class="container">
+            <div class="breadcrumb-nav">
+              <a href="#/">${I18n.t('breadcrumb_home')}</a> <span>/</span> ${I18n.t('markets_h1')}
+            </div>
+            <div class="category-title-flex">
+              <h1>${I18n.t('markets_h1')}</h1>
+              <p class="category-blurb">${I18n.t('markets_blurb')}</p>
+              <div class="nav-spacer"></div>
+              <div class="market-status-pill ${open ? 'is-open' : ''}">
+                <span class="market-status-dot"></span>
+                <span>
+                  <strong>${I18n.t(open ? 'markets_open' : 'markets_closed')}</strong>
+                  <small>${I18n.t('markets_hours')}</small>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="market-tape" data-market-widget="tape"></div>
+
+        <section class="container market-section" style="padding-top:26px">
+          <div class="section-title-bar">
+            <span class="red-bar-indicator"></span>
+            <h2>${I18n.t('markets_glance_title')}</h2>
+          </div>
+          <div class="market-card market-widget-host market-glance-host" data-market-widget="glance"></div>
+        </section>
+
+        <section class="container market-section market-main-grid">
+          <div>
+            <div class="section-title-bar">
+              <span class="red-bar-indicator"></span>
+              <h2>${I18n.t('markets_chart_title')}</h2>
+            </div>
+            <div class="filter-pills-row market-symbol-pills">
+              ${MARKET_CHART_SYMBOLS.map(sym => `
+                <button class="filter-pill ${this.marketChartSymbol === sym.symbol ? 'active' : ''}" data-symbol="${sym.symbol}" onclick="window.app.setMarketChartSymbol('${sym.symbol}')">${sym.label}</button>
+              `).join('')}
+            </div>
+            <div class="market-card market-widget-host market-chart-host" id="marketChartHost" data-market-widget="chart" data-market-arg="${this.marketChartSymbol}"></div>
+            <p class="market-hint">${I18n.t('markets_chart_hint')}</p>
+          </div>
+          <aside>
+            <div class="section-title-bar">
+              <span class="red-bar-indicator"></span>
+              <h2>${I18n.t('markets_movers_title')}</h2>
+            </div>
+            <div class="market-card market-widget-host market-movers-host" data-market-widget="movers"></div>
+          </aside>
+        </section>
+
+        <section class="container market-section">
+          <div class="section-title-bar">
+            <span class="red-bar-indicator"></span>
+            <h2>${I18n.t('markets_heatmap_title')}</h2>
+            <span class="market-title-note">${I18n.t('markets_heatmap_note')}</span>
+          </div>
+          <div class="market-card market-widget-host market-heatmap-host" data-market-widget="heatmap"></div>
+        </section>
+
+        <section class="container market-section">
+          <div class="section-title-bar">
+            <span class="red-bar-indicator"></span>
+            <h2>${I18n.t('markets_watchlist_title')}</h2>
+          </div>
+          <div class="market-card market-widget-host market-watchlist-host" data-market-widget="watchlist"></div>
+        </section>
+
+        <section class="container market-section">
+          <div class="section-title-bar">
+            <span class="red-bar-indicator"></span>
+            <h2>${I18n.t('markets_news_title')}</h2>
+            <div class="nav-spacer"></div>
+            <a href="#/category/Business" class="section-view-all">${I18n.t('markets_business_link')}</a>
+          </div>
+          <div class="grid-3-col" id="marketNewsGrid">
+            ${this.renderIndiaNewsSkeleton()}
+          </div>
+        </section>
+
+        <section class="container market-section">
+          <p class="market-disclaimer">${I18n.t('markets_disclaimer')}</p>
+        </section>
+      </div>
+    `;
+
+    container.querySelectorAll('[data-market-widget]').forEach(host => {
+      mountMarketWidget(host, host.dataset.marketWidget, host.dataset.marketArg);
+    });
+    this.loadMarketNews();
+  }
+
+  setMarketChartSymbol(symbol) {
+    this.marketChartSymbol = symbol;
+    document.querySelectorAll('.market-symbol-pills .filter-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.symbol === symbol);
+    });
+    mountMarketWidget(document.getElementById('marketChartHost'), 'chart', symbol);
+  }
+
+  async loadMarketNews() {
+    const stillHere = () => this.currentRoute === 'markets' && document.getElementById('marketNewsGrid');
+    try {
+      const articles = await fetchMarketNews();
+      const gridEl = stillHere();
+      if (!gridEl) return;
+      gridEl.innerHTML = articles.length
+        ? articles.slice(0, 9).map(a => this.renderWireNewsCard(a)).join('')
+        : `<div class="wire-state-box">${I18n.t('india_news_empty')}</div>`;
+    } catch (err) {
+      const gridEl = stillHere();
+      if (gridEl) gridEl.innerHTML = `<div class="wire-state-box">${I18n.t('india_news_error')}</div>`;
+    }
   }
 
   // ==========================================
@@ -1037,7 +1219,7 @@ class App {
         </div>
         <div class="news-card-body">
           <span class="badge-pill-red">${this.catLabel(a.category)}</span>
-          <h3 class="news-card-headline">${L(a.title)}</h3>
+          <h3 class="news-card-headline">${this.loc(a, 'title')}</h3>
           <div class="news-card-time">${this.formatTimeAgo(a.publishedAt)}</div>
         </div>
       </article>
@@ -1064,6 +1246,32 @@ class App {
     } catch {
       return new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
     }
+  }
+
+  // Instagram serves an embeddable player at /<reel|p|tv>/<code>/embed/
+  instagramEmbedUrl(url) {
+    const m = String(url || '').match(/instagram\.com\/(?:[\w.]+\/)?(reels?|p|tv)\/([\w-]+)/i);
+    if (!m) return '';
+    const kind = m[1].toLowerCase().startsWith('reel') ? 'reel' : m[1].toLowerCase();
+    return `https://www.instagram.com/${kind}/${m[2]}/embed/`;
+  }
+
+  // The Instagram player reports its own height once it has loaded
+  initInstagramResize() {
+    window.addEventListener('message', (e) => {
+      if (e.origin !== 'https://www.instagram.com' || typeof e.data !== 'string') return;
+      let msg;
+      try {
+        msg = JSON.parse(e.data);
+      } catch {
+        return;
+      }
+      const height = msg && msg.type === 'MEASURE' && msg.details && Number(msg.details.height);
+      if (!height) return;
+      document.querySelectorAll('.instagram-embed iframe').forEach(frame => {
+        if (frame.contentWindow === e.source) frame.style.height = `${height}px`;
+      });
+    });
   }
 
   extractYouTubeId(url) {
@@ -1133,7 +1341,7 @@ class App {
         resultsContainer.innerHTML = articles.map(a => `
           <div class="search-result-item" onclick="location.hash='#/article/${a.id}'; document.getElementById('searchModal').classList.remove('open');">
             <span class="badge-pill-red">${this.catLabel(a.category)}</span>
-            <h4>${L(a.title)}</h4>
+            <h4>${this.loc(a, 'title')}</h4>
             <div class="meta">${a.author} · ${this.formatTimeAgo(a.publishedAt)}</div>
           </div>
         `).join('');
