@@ -15,7 +15,7 @@ const STORAGE_KEYS = {
 
 // Bump when new stories are added to INSTAGRAM_STORIES, so browsers that
 // already hold saved data pick them up without losing what they have stored.
-const SEED_VERSION = 1;
+const SEED_VERSION = 2;
 
 const DEFAULT_SETTINGS = {
   siteName: 'India News 18',
@@ -44,7 +44,305 @@ const DEFAULT_TICKERS = [
 // Each one becomes both an article and a video/reel entry. The original
 // Gujarati copy ships alongside the English so the Gujarati edition shows the
 // newsroom's own wording instead of a machine translation.
+const TELE_MANAS = 'If you or someone close to you is going through financial or mental stress, do not stay alone. The Tele-MANAS helpline 14416 offers free help 24 hours a day, including in Gujarati.';
+const TELE_MANAS_GU = 'જો તમે કે તમારા કોઈ પ્રિયજન આર્થિક કે માનસિક તણાવમાંથી પસાર થઈ રહ્યા હોય, તો એકલા ન રહો. ટેલી-માનસ હેલ્પલાઇન 14416 પર 24 કલાક નિઃશુલ્ક મદદ ઉપલબ્ધ છે, ગુજરાતીમાં પણ.';
+
 const INSTAGRAM_STORIES = [
+  {
+    code: 'DfFu683zg5P',
+    kind: 'reel',
+    publishedAt: '2026-10-29T19:14:07.000Z',
+    category: 'City',
+    videoCategory: 'Vadodara News',
+    filterType: 'Bulletins',
+    location: 'Narsinhji ni Pol, MG Road',
+    title: 'Deaths of three family members on MG Road: police find three notes, family had debt of about ₹33 lakh',
+    titleGu: 'નરસિંહજીની પોળમાં એક જ પરિવારના 3 સભ્યોના મોત: પોલીસને ત્રણ નોટ મળી, આશરે ₹33 લાખનું દેવું',
+    excerpt: 'ACP G. B. Babhaniya gave details of the investigation into the deaths of a mother, son and daughter in Narsinhji ni Pol, near Dala Patel ni Pol on MG Road.',
+    excerptGu: 'એમજી રોડ, દલા પટેલની પોળ પાસે આવેલી નરસિંહજીની પોળમાં માતા, પુત્ર અને પુત્રીના મોતના મામલે ACP જી. બી. બાભણીયાએ તપાસની વિગતો આપી છે.',
+    points: [
+      'Police have recovered three separate notes from the deceased.',
+      'Preliminary investigation shows the family was under financial strain, with a debt of about ₹33 lakh.',
+      'The mobile phones of the deceased have been sent to the FSL for examination.',
+      'Further investigation by the police is under way.',
+      TELE_MANAS
+    ],
+    pointsGu: [
+      'પોલીસને મૃતકો પાસેથી ત્રણ અલગ-અલગ નોટ મળી આવી છે, જે કબજે કરવામાં આવી છે',
+      'પ્રાથમિક તપાસમાં પરિવાર આર્થિક સંકડામણમાં હોવાનું અને અંદાજિત 33 લાખ રૂપિયાનું દેવું હોવાનું સામે આવ્યું છે',
+      'મૃતકોના મોબાઈલ ફોન FSLમાં તપાસ માટે મોકલવામાં આવ્યા છે',
+      'પોલીસ દ્વારા આગળની તપાસ ચાલી રહી છે',
+      TELE_MANAS_GU
+    ],
+    tags: ['Vadodara', 'MG Road', 'Vadodara Police']
+  },
+  {
+    code: 'DfFuIk4CI3I',
+    kind: 'p',
+    publishedAt: '2026-10-29T19:07:14.000Z',
+    category: 'City',
+    videoCategory: 'Vadodara News',
+    filterType: 'Ground reports',
+    location: 'Tandalja',
+    title: 'Customer alleges fly found inside bread packet bought in Tandalja',
+    titleGu: 'તાંદલજામાં બ્રેડના પેકેટમાં માખી નીકળ્યાનો ગ્રાહકનો આક્ષેપ',
+    excerpt: 'A customer has alleged that a fly was seen inside a packet of Super Bakers bread bought from a shop in the Tandalja area.',
+    excerptGu: 'તાંદલજા વિસ્તારની એક દુકાનમાંથી ગ્રાહકે ખરીદેલા Super Bakersના બ્રેડના પેકેટમાં માખી નજરે પડ્યાનો આક્ષેપ.',
+    points: [
+      'Location: Tandalja, Vadodara.',
+      'Product: Super Bakers Atta Whole Wheat Bread.',
+      'The complaint raises questions about food quality and hygiene.',
+      'Check the packet, date and seal when buying food. Complaints can be filed through FSSAI’s “Food Safety Connect” app.'
+    ],
+    pointsGu: [
+      'સ્થળ: તાંદલજા, વડોદરા',
+      'પ્રોડક્ટ: Super Bakers – Atta Whole Wheat Bread',
+      'ખાદ્ય ગુણવત્તા અને સ્વચ્છતા સામે ઊભા થયા સવાલો',
+      'ખાદ્ય પદાર્થ ખરીદતી વખતે પેકેટ, તારીખ અને સીલ જરૂર ચકાસો. ફરિયાદ માટે FSSAIની “Food Safety Connect” એપનો ઉપયોગ કરી શકાય'
+    ],
+    tags: ['Vadodara', 'Tandalja', 'Food Safety']
+  },
+  {
+    code: 'DfEbDkGIIw2',
+    kind: 'reel',
+    publishedAt: '2026-10-29T07:01:17.000Z',
+    category: 'City',
+    videoCategory: 'Vadodara News',
+    filterType: 'Ground reports',
+    location: 'Dandiya Bazaar',
+    title: 'Dandiya Bazaar: questions over shop steps built on the footpath opposite Vadodara Gas Limited',
+    titleGu: 'દાંડિયા બજારમાં ફૂટપાથ પર બાંધકામનો મામલો: વડોદરા ગેસ લિમિટેડ સામે દુકાનના પગથિયાં અંગે સવાલ',
+    excerpt: 'Questions have been raised about the steps of a shop opposite Vadodara Gas Limited, which allegedly extend from the footpath onto the road.',
+    excerptGu: 'વડોદરા ગેસ લિમિટેડ સામે દુકાનના પગથિયાં અંગે સવાલો ઊભા થયા છે; ફૂટપાથથી રોડ સુધી બાંધકામ થયાનો આક્ષેપ છે.',
+    points: [
+      'The construction allegedly extends from the footpath onto the road.',
+      'There is a demand to check whether the shop has BU (building use) permission.',
+      'Does the actual construction match the approved plan?',
+      'The footpath near the adjacent bank is also said to be blocked.',
+      'Questions have been raised about the work of the corporation’s town planning department.',
+      'Will the ward officer and the encroachment branch inspect the site?',
+      'In the video: what Municipal Commissioner Arun Mahesh Babu said.'
+    ],
+    pointsGu: [
+      'ફૂટપાથથી રોડ સુધી બાંધકામ થયાનો આક્ષેપ',
+      'દુકાનની BU પરમિશન છે કે નહીં? તપાસની માગ',
+      'મંજૂર નકશો અને વાસ્તવિક બાંધકામ વચ્ચે મેળ છે કે નહીં?',
+      'બાજુની બેંક પાસે પણ ફૂટપાથ રોકાયો હોવાનો દાવો',
+      'મનપાના ટાઉન પ્લાનિંગ વિભાગની કામગીરી સામે સવાલો',
+      'વોર્ડ ઓફિસર અને દબાણ શાખા સ્થળ તપાસ કરશે?',
+      'વીડિયોમાં જુઓ મ્યુનિસિપલ કમિશનર અરુણ મહેશ બાબુએ શું કહ્યું'
+    ],
+    tags: ['Vadodara', 'VMC', 'Dandiya Bazaar'],
+    isTrending: true
+  },
+  {
+    code: 'DfEYyiqoeeR',
+    kind: 'p',
+    publishedAt: '2026-10-29T06:41:29.000Z',
+    category: 'City',
+    videoCategory: 'Vadodara District',
+    filterType: 'Ground reports',
+    location: 'Bhadarva, Savli',
+    title: 'Savli: man, 55, dies after being caught between two fighting cows in Bhadarva village',
+    titleGu: 'સાવલી: ભાદરવા ગામે બે લડતી ગાયોની અડફેટે આધેડનું કરુણ મોત',
+    excerpt: 'Devisinh Manubhai Vaghela (Rana), 55, was caught in a fight between two cows on the outskirts of the village and died after brief treatment.',
+    excerptGu: 'ગામની ભાગોળે બે ગાયો વચ્ચેની લડાઈ દરમિયાન 55 વર્ષીય દેવીસિંહ મનુભાઈ વાઘેલા (રણા) અડફેટે આવ્યા હતા. ટૂંકી સારવાર બાદ તેમનું મોત નીપજ્યું.',
+    points: [
+      'Location: Bhadarva, Savli taluka, Vadodara district.',
+      'The cows gored him, causing serious injuries.',
+      'His death has left the whole village in mourning.',
+      'Keep a safe distance from animals that are fighting or agitated on the road.'
+    ],
+    pointsGu: [
+      'સ્થળ: ભાદરવા, તા. સાવલી, જિ. વડોદરા',
+      'ગાયોએ શિંગડે ભેરવીને તેમને ગંભીર ઈજાઓ પહોંચાડી હતી',
+      'તેમના મોતના પગલે સમગ્ર ગામમાં શોકની લાગણી પ્રસરી ગઈ છે',
+      'રસ્તા પર લડતા કે ભડકેલા પશુઓથી સલામત અંતર રાખો'
+    ],
+    tags: ['Savli', 'Vadodara District']
+  },
+  {
+    code: 'DfEYoSdoNSG',
+    kind: 'reel',
+    publishedAt: '2026-10-29T06:40:05.000Z',
+    category: 'Crime',
+    videoCategory: 'Vadodara Breaking',
+    filterType: 'Bulletins',
+    location: 'Vadodara',
+    title: 'Court rejects murder accused Chirag Pandya’s plea for transfer from Surat jail to Vadodara jail',
+    titleGu: 'હત્યાના આરોપીને વડોદરા જેલમાં એન્ટ્રી નહીં: ચિરાગ પંડ્યાની ટ્રાન્સફર અરજી કોર્ટે ફગાવી',
+    excerpt: 'The court turned down the plea of Chirag Pandya, who sought a transfer from Surat jail to Vadodara jail citing family visits and a threat to his life.',
+    excerptGu: 'સુરતથી વડોદરા જેલમાં ટ્રાન્સફર માંગતા ચિરાગ પંડ્યાને કોર્ટનો ઝટકો; પરિવારની મુલાકાત અને જાનના જોખમની દલીલ સાથે કરેલી અરજી નામંજૂર.',
+    points: [
+      'The plea cited family visits and a threat to his life.',
+      'A report cited earlier fights with prisoners and illegal possession of a mobile phone in Vadodara jail.',
+      'The accused’s brother is also lodged in Vadodara jail, raising fears of misconduct.',
+      'The court dismissed the plea after arguments by public prosecutor P. C. Patel.',
+      'The court took a firm stand: no relief for those who spread unrest in jail.'
+    ],
+    pointsGu: [
+      'પરિવારની મુલાકાત અને જાનના જોખમની દલીલ સાથે કરેલી અરજી નામંજૂર',
+      'વડોદરા જેલમાં અગાઉ કેદીઓ સાથે મારામારી અને ગેરકાયદે મોબાઈલ રાખ્યાનો રિપોર્ટ',
+      'આરોપીના ભાઈ પણ વડોદરા જેલમાં બંધ હોવાથી ગેરપ્રવૃત્તિની આશંકા',
+      'સરકારી વકીલ પી.સી. પટેલની દલીલો બાદ કોર્ટે અરજી ફગાવી',
+      'જેલમાં અશાંતિ ફેલાવનારને રાહત નહીં: કોર્ટનું કડક વલણ'
+    ],
+    tags: ['Vadodara', 'Vadodara Court']
+  },
+  {
+    code: 'DfEX4R8IYRB',
+    kind: 'reel',
+    publishedAt: '2026-10-29T06:33:32.000Z',
+    category: 'Crime',
+    videoCategory: 'Vadodara Breaking',
+    filterType: 'Bulletins',
+    location: 'Navayard Road',
+    title: 'Bogus doctor running a clinic without a degree caught on Navayard Road',
+    titleGu: 'ડિગ્રી વગર દવાખાનું ચલાવતો બોગસ ડોક્ટર ઝડપાયો',
+    excerpt: 'The SOG has caught Dinesh alias Bharuchi Don, who has passed only Class 10, running a clinic as a doctor since 2022.',
+    excerptGu: 'માત્ર ધોરણ 10 પાસ દિનેશ ઉર્ફે ભરૂચી ડોનને SOGએ ઝડપી પાડ્યો; વર્ષ 2022થી ડોક્ટર બનીને ક્લિનિક ચલાવતો હતો.',
+    points: [
+      'The raid was carried out at Sainath Clinic in Shrinathpuram Apartment, Navayard Road.',
+      'He was found giving allopathic medicines and injections to patients.',
+      'He had been running the clinic as a doctor since 2022.',
+      'Cough syrup, antibiotics, painkillers, injections and medical equipment were seized.',
+      'Rubber stamps and identity cards he used as a doctor were also found.',
+      'Goods worth ₹20,874 in all were seized.',
+      'The action was taken in the presence of the medical officer of the Urban Primary Health Centre.',
+      'Before taking treatment, check the doctor’s degree and registration.'
+    ],
+    pointsGu: [
+      'નવાયાર્ડ રોડ, શ્રીનાથપુરમ એપાર્ટમેન્ટના સાંઈનાથ ક્લિનિકમાં દરોડો',
+      'દર્દીઓને એલોપેથીક દવાઓ અને ઇન્જેક્શન આપતો હોવાનો ખુલાસો',
+      'વર્ષ 2022થી ડોક્ટર બનીને ચલાવતો હતો ક્લિનિક',
+      'કફ સિરપ, એન્ટિબાયોટિક, પેઇનકિલર, ઇન્જેક્શન અને મેડિકલ સાધનો કબજે',
+      'ડોક્ટર તરીકે વપરાતા રબર સ્ટેમ્પ અને ઓળખપત્રો પણ મળ્યાં',
+      'કુલ ₹20,874નો મુદ્દામાલ જપ્ત',
+      'અર્બન પ્રાઇમરી હેલ્થ સેન્ટરના તબીબી અધિકારીની હાજરીમાં કાર્યવાહી',
+      'સારવાર કરાવતા પહેલાં ડોક્ટરની ડિગ્રી અને રજિસ્ટ્રેશન જરૂર તપાસો'
+    ],
+    tags: ['Vadodara', 'Bogus Doctor', 'SOG'],
+    isLead: true,
+    isBreaking: true,
+    isTrending: true
+  },
+  {
+    code: 'DfEU0GLoApr',
+    kind: 'reel',
+    publishedAt: '2026-10-29T06:06:45.000Z',
+    category: 'City',
+    videoCategory: 'Vadodara Breaking',
+    filterType: 'Ground reports',
+    location: 'Savli',
+    title: 'Savli school accused of holding Class 7 exam before the scheduled date',
+    titleGu: 'સાવલીની સ્કૂલમાં પરીક્ષા પહેલાં જ લેવાઈ ગઈ પરીક્ષા!',
+    excerpt: 'Gyanshakti Residential School of Excellence in Savli is accused of serious negligence for holding a Class 7 exam ahead of the date set by the government.',
+    excerptGu: 'સાવલી સ્થિત જ્ઞાનશક્તિ રેસિડેન્શિયલ સ્કૂલ ઑફ એક્સેલન્સની ગંભીર બેદરકારીનો આક્ષેપ.',
+    points: [
+      'The Class 7 Social Science paper scheduled for 29 October was held before that date.',
+      'More than about 200 students had already taken the exam.',
+      'The school is accused of breaking the timetable set by the government.',
+      'The institution is alleged to have held the exam on its own.',
+      'Other students in the district will take the same paper on 29 October.',
+      'The episode raises serious questions about exam secrecy and arrangements, and about who is responsible.'
+    ],
+    pointsGu: [
+      'ધોરણ 7નું સામાજિક વિજ્ઞાનનું 29 ઓક્ટોબરનું પેપર નિર્ધારિત તારીખ પહેલાં જ લેવાયું',
+      'અંદાજે 200થી વધુ વિદ્યાર્થીઓએ અગાઉથી જ આપી દીધી પરીક્ષા',
+      'સરકારે નક્કી કરેલા સમયપત્રકના ભંગનો આક્ષેપ',
+      'સંસ્થાએ પોતાની રીતે પરીક્ષા યોજી હોવાનો આક્ષેપ',
+      'આ જ પેપર જિલ્લાના અન્ય વિદ્યાર્થીઓ 29 ઓક્ટોબરે આપશે',
+      'પરીક્ષાની ગુપ્તતા અને વ્યવસ્થા સામે ગંભીર સવાલો, જવાબદાર કોણ?'
+    ],
+    tags: ['Savli', 'Education'],
+    isTrending: true
+  },
+  {
+    code: 'DfDSmGZoTgl',
+    kind: 'reel',
+    publishedAt: '2026-10-28T20:28:07.000Z',
+    category: 'City',
+    videoCategory: 'Vadodara News',
+    filterType: 'Bulletins',
+    location: 'MG Road',
+    title: 'Three members of a family found dead on MG Road; police investigating',
+    titleGu: 'એમજી રોડ પર એક જ પરિવારના 3 સભ્યોનાં મોત',
+    excerpt: 'The deaths of a mother, son and daughter have left the area in grief. Preliminary investigation suggests a suspected suicide; the cause is still unclear.',
+    excerptGu: 'માતા, પુત્ર અને પુત્રીનાં મોતથી વિસ્તારમાં શોકનો માહોલ છવાયો છે. પ્રાથમિક તપાસમાં આત્મહત્યાની આશંકા વ્યક્ત કરાઈ છે.',
+    points: [
+      'Location: Dala Patel ni Pol, Narsinhji ni Pol, MG Road.',
+      'Two years ago, the head of the family died of a heart attack.',
+      'After his father’s death, the son had returned from Canada.',
+      'Police and senior officers reached the spot.',
+      'The cause is still unclear and the police investigation is continuing.',
+      TELE_MANAS
+    ],
+    pointsGu: [
+      'સ્થળ: દલા પટેલની પોળ, નરસિંહજીની પોળ, એમજી રોડ',
+      'બે વર્ષ પહેલાં ઘરના મોભીનું હૃદયરોગના હુમલાથી અવસાન થયું હતું',
+      'પિતાના અવસાન બાદ પુત્ર કેનેડાથી પરત આવ્યો હતો',
+      'પોલીસ અને ઉચ્ચ અધિકારીઓ ઘટના સ્થળે પહોંચ્યા',
+      'ઘટનાનું કારણ હજુ અકબંધ, પોલીસ તપાસ ચાલુ',
+      TELE_MANAS_GU
+    ],
+    tags: ['Vadodara', 'MG Road']
+  },
+  {
+    code: 'DfB5WPmoQi7',
+    kind: 'reel',
+    publishedAt: '2026-10-28T07:28:16.000Z',
+    category: 'Crime',
+    videoCategory: 'Vadodara Breaking',
+    filterType: 'Ground reports',
+    location: 'National Highway 8',
+    title: 'Bulldozer run over foreign liquor worth ₹1.74 crore seized by five Zone-3 police stations',
+    titleGu: '₹1.74 કરોડના વિદેશી દારૂ પર ફરી વળ્યું બુલડોઝર',
+    excerpt: 'Liquor worth crores seized by five police stations of Zone 3 was destroyed on an open plot near L&T Circuit House on National Highway 8.',
+    excerptGu: 'ઝોન-3ના પાંચ પોલીસ સ્ટેશનનો કરોડોનો દારૂ નેશનલ હાઈવે-8 પર એલ એન્ડ ટી સર્કિટ હાઉસ નજીક ખુલ્લા પ્લોટમાં નાશ કરાયો.',
+    points: [
+      'The action took place on an open plot near L&T Circuit House on National Highway 8.',
+      'A bulldozer was run over foreign liquor worth more than ₹1.74 crore.',
+      'The stock had been seized by Manjalpur, Makarpura, Kapurai, Wadi and Panigate police stations.',
+      'It was disposed of in the presence of police officers and the prohibition department.',
+      'The action is part of enforcing the prohibition law.'
+    ],
+    pointsGu: [
+      'નેશનલ હાઈવે-8 પર એલ એન્ડ ટી સર્કિટ હાઉસ નજીક ખુલ્લા પ્લોટમાં કાર્યવાહી',
+      '₹1 કરોડ 74 લાખથી વધુના વિદેશી દારૂના જથ્થા પર ફેરવાયું બુલડોઝર',
+      'માંજલપુર, મકરપુરા, કપુરાઈ, વાડી અને પાણીગેટ પોલીસ સ્ટેશનનો મુદ્દામાલ',
+      'પોલીસ અધિકારીઓ અને નશાબંધી શાખાની હાજરીમાં નિકાલ',
+      'દારૂબંધીના કાયદાના અમલના ભાગરૂપે પોલીસની મોટી કાર્યવાહી'
+    ],
+    tags: ['Vadodara Police', 'Prohibition'],
+    isTrending: true
+  },
+  {
+    code: 'DfB3r7CILKL',
+    kind: 'reel',
+    publishedAt: '2026-10-28T07:13:45.000Z',
+    category: 'Crime',
+    videoCategory: 'Vadodara Breaking',
+    filterType: 'Bulletins',
+    location: 'Tarsali bypass',
+    title: 'Liquor cutting busted on Tarsali bypass: goods worth ₹30.75 lakh seized, three held',
+    titleGu: 'તરસાલી બાયપાસ પર દારૂનું કટિંગ ઝડપાયું: ₹30.75 લાખનો મુદ્દામાલ કબજે, 3 આરોપીઓ ઝડપાયા',
+    excerpt: 'Makarpura police caught liquor being shifted between cars in the parking area of Dwarkesh Highview Society.',
+    excerptGu: 'મકરપુરા પોલીસની મોટી કાર્યવાહી: દ્વારકેશ હાઇવ્યુ સોસાયટીના પાર્કિંગમાં ચાલતું હતું દારૂનું કટિંગ.',
+    points: [
+      '1,855 units of foreign liquor and beer were seized from two cars.',
+      'Seized: liquor and beer worth ₹5.50 lakh, two cars worth ₹23 lakh and five mobile phones worth ₹2.25 lakh.',
+      'Several prohibition cases have been registered against the accused before.',
+      'A case has been registered under the Prohibition Act and further investigation has begun.'
+    ],
+    pointsGu: [
+      'બે કારમાંથી વિદેશી દારૂ અને બિયરના 1,855 નંગ જપ્ત',
+      '₹5.50 લાખનો દારૂ-બિયર, ₹23 લાખની 2 કાર અને ₹2.25 લાખના 5 મોબાઇલ કબજે',
+      'આરોપીઓ સામે અગાઉ પણ પ્રોહિબિશનના અનેક ગુના નોંધાયેલા',
+      'પ્રોહિબિશન એક્ટ હેઠળ ગુનો નોંધી વધુ તપાસ શરૂ'
+    ],
+    tags: ['Makarpura', 'Prohibition'],
+    isTrending: true
+  },
   {
     code: 'DeO-1bAoUzb',
     kind: 'reel',
@@ -70,7 +368,6 @@ const INSTAGRAM_STORIES = [
       'ચાંદીના કાયદેસરના બિલો અને GST દસ્તાવેજો અંગે રેલવે પોલીસની તપાસ તેજ'
     ],
     tags: ['Vadodara', 'Railway Police', 'Silver Seizure'],
-    isLead: true,
     isBreaking: true,
     isTrending: true
   },
@@ -229,7 +526,7 @@ const SEED_VIDEOS = INSTAGRAM_STORIES.map((s, idx) => ({
   duration: s.kind === 'reel' ? 'Reel' : 'Post',
   articleId: `art-ig-${s.code}`,
   isLive: false,
-  isFeatured: idx === 0,
+  isFeatured: !!s.isLead,
   createdAt: s.publishedAt
 }));
 
