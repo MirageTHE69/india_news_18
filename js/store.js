@@ -15,7 +15,7 @@ const STORAGE_KEYS = {
 
 // Bump when new stories are added to INSTAGRAM_STORIES, so browsers that
 // already hold saved data pick them up without losing what they have stored.
-const SEED_VERSION = 2;
+const SEED_VERSION = 3;
 
 const DEFAULT_SETTINGS = {
   siteName: 'India News 18',
@@ -48,6 +48,149 @@ const TELE_MANAS = 'If you or someone close to you is going through financial or
 const TELE_MANAS_GU = 'જો તમે કે તમારા કોઈ પ્રિયજન આર્થિક કે માનસિક તણાવમાંથી પસાર થઈ રહ્યા હોય, તો એકલા ન રહો. ટેલી-માનસ હેલ્પલાઇન 14416 પર 24 કલાક નિઃશુલ્ક મદદ ઉપલબ્ધ છે, ગુજરાતીમાં પણ.';
 
 const INSTAGRAM_STORIES = [
+  {
+    code: 'DfNA4i2oANS',
+    kind: 'reel',
+    publishedAt: '2026-11-01T15:05:46.000Z',
+    category: 'City',
+    videoCategory: 'Vadodara News',
+    filterType: 'Ground reports',
+    location: 'Mangal Bazar',
+    title: 'Last Sunday before Diwali: shoppers pack Mangal Bazar',
+    titleGu: 'દિવાળી પહેલાનો છેલ્લો રવિવાર: મંગળ બજારમાં ખરીદદારોની ભારે ભીડ',
+    excerpt: 'On the last Sunday before Diwali, Vadodara’s markets were full of shoppers, with heavy crowds in the Mangal Bazar area thanks to the Sunday holiday.',
+    excerptGu: 'દિવાળી પહેલાના છેલ્લા રવિવારે વડોદરાના બજારોમાં ખરીદીનો માહોલ જામ્યો. રવિવારની રજાને પગલે મંગળ બજાર વિસ્તારમાં ખરીદદારોની ભારે ભીડ જોવા મળી.',
+    points: [
+      'Brisk buying of clothes and a range of Diwali goods.',
+      'Residents came out to shop with their families.',
+      'Shoppers were especially keen on children’s clothes.',
+      'Traders are upbeat about Diwali business.'
+    ],
+    pointsGu: [
+      'કપડાં અને દિવાળીની વિવિધ ચીજવસ્તુઓની ધૂમ ખરીદી',
+      'પરિવાર સાથે ખરીદી કરવા પહોંચ્યા નાગરિકો',
+      'બાળકોનાં કપડાંની ખરીદીમાં ગ્રાહકોનો ઉત્સાહ',
+      'વેપારીઓમાં દિવાળીના વેપારને લઈને ઉત્સાહનો માહોલ'
+    ],
+    tags: ['Vadodara', 'Mangal Bazar', 'Diwali 2026'],
+    isTrending: true
+  },
+  {
+    code: 'DfM6Rl-IWkA',
+    kind: 'reel',
+    publishedAt: '2026-11-01T14:08:01.000Z',
+    category: 'City',
+    videoCategory: 'Vadodara News',
+    filterType: 'Bulletins',
+    location: 'Chhani canal',
+    title: 'Bodies of a woman and an 8-month-old girl found in Chhani canal; police appeal for help to identify her',
+    titleGu: 'છાણી કેનાલમાંથી મહિલા અને 8 મહિનાની બાળકીના શબ મળ્યા: ઓળખ માટે મદદ કરો',
+    excerpt: 'The bodies of a woman and an eight-month-old baby girl were found in the Chhani canal in Vadodara. Fatehgunj police have begun efforts to identify the woman and investigate what happened.',
+    excerptGu: 'વડોદરાની છાણી કેનાલમાંથી એક મહિલા અને 8 મહિનાની માસૂમ બાળકીના શબ મળતા ચકચાર મચી ગઈ. ફતેગંજ પોલીસે ઓળખ અને ઘટનાની તપાસ હાથ ધરી છે.',
+    points: [
+      'The two are suspected to be mother and daughter.',
+      'Eyewitnesses claim they were still breathing when they were pulled out.',
+      'It is alleged that the ambulance did not arrive in time.',
+      'The name ‘Rashmika’ was found written on the woman’s hand.',
+      'Fatehgunj police are working to identify her and are investigating the incident.',
+      'If you have any information about the woman, please contact Fatehgunj police, and share this story to help identify her.',
+      'If you or someone you know is under mental stress, you can talk to the Tele-MANAS helpline 14416 for free.'
+    ],
+    pointsGu: [
+      'બંને માતા-પુત્રી હોવાની આશંકા',
+      'બહાર કાઢ્યા ત્યારે શ્વાસ ચાલતા હોવાનો પ્રત્યક્ષદર્શીઓનો દાવો',
+      'એમ્બ્યુલન્સ સમયસર ન આવી હોવાનો આક્ષેપ',
+      'મહિલાના હાથ પર ‘રશ્મિકા’ નામ લખેલું મળ્યું',
+      'ફતેગંજ પોલીસે ઓળખ અને ઘટનાની તપાસ હાથ ધરી છે',
+      'આ મહિલા વિશે કોઈ માહિતી હોય તો ફતેગંજ પોલીસનો સંપર્ક કરો. ઓળખ થઈ શકે તે માટે આ સમાચાર શેર કરો',
+      'જો તમે કે તમારા કોઈ પરિચિત માનસિક તણાવમાં હોય તો Tele-MANAS હેલ્પલાઈન 14416 પર મફત વાત કરી શકો છો'
+    ],
+    tags: ['Vadodara', 'Chhani Canal', 'Vadodara Police']
+  },
+  {
+    code: 'DfMJnvCo5u_',
+    kind: 'reel',
+    publishedAt: '2026-11-01T07:02:52.000Z',
+    category: 'City',
+    videoCategory: 'Vadodara News',
+    filterType: 'Ground reports',
+    location: 'Bill Canal Road, Ward 12',
+    title: 'Ward 12: streetlights finally come up on Bill Canal Road after Congress torch protest',
+    titleGu: 'મશાલ યાત્રા બાદ વોર્ડ 12માં લાઈટો લાગી: બિલ કેનાલ રોડ પર સ્ટ્રીટલાઈટ શરૂ',
+    excerpt: 'Bill Canal Road in Ward 12 had been dark for a long time. After a torch protest led by Ward 12 Congress president Rakesh Thakor, the administration coordinated with GEB and installed streetlights.',
+    excerptGu: 'વડોદરાના વોર્ડ 12માં બિલ કેનાલ રોડ પર લાંબા સમયથી અંધારાની સમસ્યા હતી. વોર્ડ 12ના કોંગ્રેસ પ્રમુખ રાકેશ ઠાકોરની આગેવાનીમાં મશાલ સળગાવી વિરોધ નોંધાવાયો હતો. ત્યારબાદ તંત્રએ GEB સાથે સંકલન કરી સ્ટ્રીટલાઈટ લગાવી.',
+    points: [
+      'Bill Canal Road is lit up just before Diwali.',
+      'Residents hope the lights will curb theft, chain snatching and anti-social elements.',
+      'Congress workers burst crackers to celebrate once the lights came on.'
+    ],
+    pointsGu: [
+      'દિવાળી પહેલા બિલ કેનાલ રોડને રોશનીની ભેટ',
+      'ચોરી, ચેઈન સ્નેચિંગ અને અસામાજિક તત્વો પર અંકુશની આશા',
+      'લાઈટો લાગતા કોંગ્રેસે ફટાકડા ફોડી ઉજવણી કરી'
+    ],
+    tags: ['Vadodara', 'Ward 12', 'Bill Canal Road', 'Streetlight'],
+    isTrending: true
+  },
+  {
+    code: 'DfMIGSbICDo',
+    kind: 'reel',
+    publishedAt: '2026-11-01T06:49:34.000Z',
+    category: 'Business',
+    videoCategory: 'Mandi Watch',
+    filterType: 'Ground reports',
+    location: 'Diwalipura',
+    title: 'Firecrackers up to 30% costlier this Diwali, but crowds still throng Diwalipura market',
+    titleGu: 'દિવાળી પહેલા ફટાકડાના ભાવ આસમાને: 20 થી 30% ભાવવધારો, છતાં ખરીદીનો ઉત્સાહ',
+    excerpt: 'Vadodara’s Diwalipura firecracker market is packed with Diwali shoppers. With lower production in Sivakasi and costlier raw material, prices are up 20 to 30 per cent this year, yet fancy fireworks remain a big draw.',
+    excerptGu: 'વડોદરાના દિવાળીપુરા ફટાકડા બજારમાં દિવાળીની ખરીદી માટે લોકોનો ભારે ઘસારો. શિવાકાશીમાં ઉત્પાદન ઘટતા અને કાચો માલ મોંઘો થતા આ વર્ષે ફટાકડામાં 20 થી 30 ટકા ભાવવધારો થયો છે. છતાં ફેન્સી આતશબાજીનું ભારે આકર્ષણ છે.',
+    points: [
+      'Lollipop pencils, Pizza Time and gun fountains.',
+      'Sky shots and Babu shots from 2 to 7 inches.',
+      'Shika running cars, dollar-poker wheels and laser show kothis.',
+      'Safe 0.5-inch balloons for children.'
+    ],
+    pointsGu: [
+      'લોલીપોપ પેન્સિલ, પિઝા ટાઈમ, ગન ફાઉન્ટેન',
+      '2 થી 7 ઈંચના સ્કાય શોટ અને બાબુ શોટ',
+      'શિકા રનિંગ કાર, ડોલર-પોકર વ્હીલ, લેઝર શો કોઠી',
+      'બાળકો માટે 0.5 ઈંચના સુરક્ષિત ગુબ્બારા'
+    ],
+    tags: ['Vadodara', 'Diwali 2026', 'Firecrackers'],
+    isTrending: true
+  },
+  {
+    code: 'DfH01h6Iqk2',
+    kind: 'reel',
+    publishedAt: '2026-10-30T14:44:17.000Z',
+    category: 'Politics',
+    videoCategory: 'Vadodara News',
+    filterType: 'Bulletins',
+    location: 'VMC, Vadodara',
+    title: 'VMC standing committee approves 12 of 13 development works',
+    titleGu: 'VMCની સ્ટેન્ડિંગ કમિટીએ 13માંથી 12 કામોને આપી મંજૂરી',
+    excerpt: 'Thirteen development works were placed before the Vadodara Municipal Corporation’s standing committee; 12 were approved and one was rejected.',
+    excerptGu: 'વડોદરા મહાનગરપાલિકાની સ્ટેન્ડિંગ કમિટીની બેઠકમાં 13 વિકાસ કામો રજૂ થયા, જેમાંથી 12 મંજૂર અને 1 નામંજૂર.',
+    points: [
+      'Ward 9: a new water line from Samta police chowky to Saurabh Park.',
+      'A new road near Pramukhswami Nagar on the Kalali 40-metre ring road.',
+      'Shifting and repair of the old Sayajiganj tank line.',
+      'RCC roads in the North Zone, and footpath, service track and parking work in the East Zone.',
+      '85 Sakhi Mandal stalls at the Swadeshi fair at Akota Stadium.',
+      'Sardar Jayanti: live telecast of the Ekta Parade on LED screens in 19 wards.',
+      'Decorative lighting for Diwali and the Narsinhji festival.'
+    ],
+    pointsGu: [
+      'વોર્ડ 9: સમતા પોલીસ ચોકીથી સૌરભ પાર્ક સુધી નવી પાણીની લાઇન',
+      'કલાલી 40 મીટર રિંગ રોડ પર પ્રમુખસ્વામી નગર પાસે નવો રસ્તો',
+      'જૂની સયાજીગંજ ટાંકીની લાઇન શિફ્ટ અને મરામત',
+      'ઉત્તર ઝોન RCC રોડ, પૂર્વ ઝોનમાં ફૂટપાથ-સર્વિસ ટ્રેક-પાર્કિંગનું કામ',
+      'અકોટા સ્ટેડિયમ સ્વદેશી મેળામાં સખી મંડળના 85 સ્ટોલ',
+      'સરદાર જયંતિ: 19 વોર્ડમાં LED સ્ક્રીન પર એકતા પરેડનું લાઈવ પ્રસારણ',
+      'દિવાળી અને નરસિંહજી ઉત્સવ માટે ડેકોરેટિવ લાઇટિંગ'
+    ],
+    tags: ['Vadodara', 'VMC', 'Development']
+  },
   {
     code: 'DfFu683zg5P',
     kind: 'reel',
